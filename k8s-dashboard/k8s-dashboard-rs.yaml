@@ -1,0 +1,74 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  annotations:
+    deployment.kubernetes.io/desired-replicas: "1"
+    deployment.kubernetes.io/max-replicas: "2"
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: null
+  generation: 1
+  labels:
+    k8s-app: kubernetes-dashboard
+    pod-template-hash: 85b66c957b
+  name: kubernetes-dashboard-85b66c957b
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Deployment
+    name: kubernetes-dashboard
+    uid: e5ed287e-1bdf-11e9-8f28-080027b73cdc
+  selfLink: /apis/extensions/v1beta1/namespaces/kube-system/replicasets/kubernetes-dashboard-85b66c957b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: kubernetes-dashboard
+      pod-template-hash: 85b66c957b
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: kubernetes-dashboard
+        pod-template-hash: 85b66c957b
+    spec:
+      containers:
+      - args:
+        - --auto-generate-certificates
+        image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        name: kubernetes-dashboard
+        ports:
+        - containerPort: 8443
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: kubernetes-dashboard
+      serviceAccountName: kubernetes-dashboard
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      volumes:
+      - emptyDir: {}
+        name: tmp-volume
+status:
+  replicas: 0

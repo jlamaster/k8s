@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: traefik
+    chart: traefik-1.59.1
+    heritage: Tiller
+    release: traefik
+  name: traefik-dashboard
+  selfLink: /apis/extensions/v1beta1/namespaces/default/ingresses/traefik-dashboard
+spec:
+  rules:
+  - host: traefik-dashboard.local
+    http:
+      paths:
+      - backend:
+          serviceName: traefik-dashboard
+          servicePort: traefik-dashboard
+status:
+  loadBalancer: {}

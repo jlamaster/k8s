@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  generation: 1
+  name: kubernetes-dashboard
+  selfLink: /apis/extensions/v1beta1/namespaces/kube-system/ingresses/kubernetes-dashboard
+spec:
+  rules:
+  - host: k8s-dashboard.local
+    http:
+      paths:
+      - backend:
+          serviceName: kubernetes-dashboard
+          servicePort: k8s-dashboard
+status:
+  loadBalancer: {}
