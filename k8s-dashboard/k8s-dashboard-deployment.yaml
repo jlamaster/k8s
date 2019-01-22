@@ -1,68 +1,54 @@
-apiVersion: extensions/v1beta1
 kind: Deployment
+apiVersion: apps/v1beta2
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-  creationTimestamp: null
-  generation: 1
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  selfLink: /apis/extensions/v1beta1/namespaces/kube-system/deployments/kubernetes-dashboard
+  namespace: kube-system
 spec:
-  progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
       k8s-app: kubernetes-dashboard
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         k8s-app: kubernetes-dashboard
     spec:
       containers:
-      - args:
-        - --auto-generate-certificates
-        image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.0
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /
-            port: 8443
-            scheme: HTTPS
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 30
-        name: kubernetes-dashboard
+      - name: kubernetes-dashboard
+        image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
         ports:
         - containerPort: 8443
           protocol: TCP
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+        args:
+#          - --enable-insecure-login
+#          - --port=8444
+#          - --insecure-port=8443
+#          - --insecure-bind-address=0.0.0.0
+           - --auto-generate-certificates
+          # Uncomment the following line to manually specify Kubernetes API server Host
+          # If not specified, Dashboard will attempt to auto discover the API server and connect
+          # to it. Uncomment only if the default does not work.
+          # - --apiserver-host=http://my-address:port
         volumeMounts:
+          # Create on-disk volume to store exec logs
         - mountPath: /tmp
           name: tmp-volume
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      serviceAccount: kubernetes-dashboard
-      serviceAccountName: kubernetes-dashboard
-      terminationGracePeriodSeconds: 30
-      tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
+        livenessProbe:
+          httpGet:
+#            scheme: HTTP
+            scheme: HTTPS
+            path: /
+            port: 8443
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
       volumes:
-      - emptyDir: {}
-        name: tmp-volume
-status: {}
+      - name: tmp-volume
+        emptyDir: {}
+      serviceAccountName: kubernetes-dashboard
+      # Comment the following tolerations if Dashboard must not be deployed on master
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule

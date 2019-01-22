@@ -1,0 +1,161 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+rules:
+  # Allow Dashboard to create 'kubernetes-dashboard-key-holder' secret.
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create"]
+  # Allow Dashboard to create 'kubernetes-dashboard-settings' config map.
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create"]
+  # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs"]
+  verbs: ["get", "update", "delete"]
+  # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
+- apiGroups: [""]
+  resources: ["configmaps"]
+  resourceNames: ["kubernetes-dashboard-settings"]
+  verbs: ["get", "update"]
+  # Allow Dashboard to get metrics from heapster.
+- apiGroups: [""]
+  resources: ["services"]
+  resourceNames: ["heapster"]
+  verbs: ["proxy"]
+- apiGroups: [""]
+  resources: ["services/proxy"]
+  resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
+  verbs: ["get"]
+---
+#To Find out Bearer Token run the following command
+#kubectl -n kube-system describe secret kubernetes-dashboard
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kube-system
+---  
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kubernetes-dashboard
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kube-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k8s-dashboard-ssl
+  namespace: kube-system
+type: kubernetes.io/tls
+data:
+  #cat cert | base64 -w0
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVRRENDQXFpZ0F3SUJBZ0lSQU41UTJTZzB4aXMxOXUvNFo3QzQrTmd3RFFZSktvWklodmNOQVFFTEJRQXcKY1RFZU1Cd0dBMVVFQ2hNVmJXdGpaWEowSUdSbGRtVnNiM0J0Wlc1MElFTkJNU013SVFZRFZRUUxEQnBRTURFeApNemM0T1Z4UU1ERXhNemM0T1VCUU1ERXhNemM0T1RFcU1DZ0dBMVVFQXd3aGJXdGpaWEowSUZBd01URXpOemc1ClhGQXdNVEV6TnpnNVFGQXdNVEV6TnpnNU1CNFhEVEU1TURFeU1UQXhNVEF4TmxvWERUSTVNREV5TVRBeE1UQXgKTmxvd1RqRW5NQ1VHQTFVRUNoTWViV3RqWlhKMElHUmxkbVZzYjNCdFpXNTBJR05sY25ScFptbGpZWFJsTVNNdwpJUVlEVlFRTERCcFFNREV4TXpjNE9WeFFNREV4TXpjNE9VQlFNREV4TXpjNE9UQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFMK2grTWlUMGp0azNwV3F0VVFlTlNYVGNtOVhJdFV2RytoeE9MRHkKMDU4VnQzVWIwbTJlOXg1VkYzaHdST2l3aGpPSENvQ2lvamwvd1c1Y01DenNEZzR4WjdiY1RiVlhaeUt0c29zegpsOC9iZHpmUlZ2bnVLeFo2YVJianlRWS9Bc2VTaCtMRjBxR0RFNGlwYW9kWS9sZEFKb05tWUgxRXc5VlYyUE1GCkR5clVHbE5QL2tSRUJ4RUFzRy9PZTIrbFhJTFpyc0Nva0hQbUxRT3VJdW02cVJqMHJMZzB1Z3RQVUh5YzZwTFkKMTVvQjZtZS9HOVRkdDN0Z20vclBxbXE0c3FUejdRWWFrQ212UkcxbmV3TWZOQUwzcUpRdFdTL3RIRkEyQXFFNQo1UGZKNWZLN0tleEdwY1FvVmQ0MkxMNkhuc0xSVlBKREpqa2R1UGprREpDUTVTY0NBd0VBQWFOMk1IUXdEZ1lEClZSMFBBUUgvQkFRREFnV2dNQk1HQTFVZEpRUU1NQW9HQ0NzR0FRVUZCd01CTUF3R0ExVWRFd0VCL3dRQ01BQXcKSHdZRFZSMGpCQmd3Rm9BVVN4U3dmMXlqcHBMVGlvaGxGWVlEeERoUTFuWXdIZ1lEVlIwUkJCY3dGWUlUYXpoegpMV1JoYzJoaWIyRnlaQzVzYjJOaGJEQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FZRUFZRUdSUnNUOThSckV0aHg2ClBOcWVTN0hRRS94cmxIQ2RzcjJiTC9uYW5PRlNEcGx5Qng2TTJrUXFydEpBbmV0eVArSjhNaXdrYzl4UjBBSGIKZkhiTkV3MkpUSEdicjJOb09jVldhNnFDbHlqaUJYeWhYOWZQUm9jQmdJUSsveW56Q25IVEhOMDc4WFp3akdlVwpGNjAvR2YraW9Cd2ZTTG4welZZdWw4Zk0rZmNEa0o0UXdLV3Y4K1U0S3NaZmg2ZHEzNG5oVElFc0xpRzlENzVWCjBnNHlnZ0hPQU0zcUNnRytmVmNITHNPenpZQkIybGNBNi9KT28xUk5ya29jVldzQzN0N05CVE4vTEF6bEYwVTUKUUlSZkhXbHFnWXdJVC85RGYwYzdpcE1hQmpCUUNCNVlQbTMxNjh1c2hnZHkzRVlESGMyQldSVWNXdEtKYUpuYQpWbmNkajNvNDViQmRFT0dzVk9JKzVZQnRzZzF6dWJQZi9tNEhHM1NYeTNtL2xURmNBcUMraitwdjJwdXRSdndpCnMyMjlXbmhUc1FhV0hjc29KbzNWYzZEdWlTQk45eXVITi92TjNuQWNsQ0ttYldYWXFoR0JVcVZkVWF1TEluWWIKcmVicVZtcFZvaEphMHNvaFJnRlIwQkYvNjd0MFQ4Rkc5Ym03N0ZMdEp5V0RNN2dHCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  #cat key | base64 -w0
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQy9vZmpJazlJN1pONlYKcXJWRUhqVWwwM0p2VnlMVkx4dm9jVGl3OHRPZkZiZDFHOUp0bnZjZVZSZDRjRVRvc0lZemh3cUFvcUk1ZjhGdQpYREFzN0E0T01XZTIzRTIxVjJjaXJiS0xNNWZQMjNjMzBWYjU3aXNXZW1rVzQ4a0dQd0xIa29maXhkS2hneE9JCnFXcUhXUDVYUUNhRFptQjlSTVBWVmRqekJROHExQnBUVC81RVJBY1JBTEJ2em50dnBWeUMyYTdBcUpCejVpMEQKcmlMcHVxa1k5S3k0TkxvTFQxQjhuT3FTMk5lYUFlcG52eHZVM2JkN1lKdjZ6NnBxdUxLazgrMEdHcEFwcjBSdApaM3NESHpRQzk2aVVMVmt2N1J4UU5nS2hPZVQzeWVYeXV5bnNScVhFS0ZYZU5peStoNTdDMFZUeVF5WTVIYmo0CjVBeVFrT1VuQWdNQkFBRUNnZ0VBYjVIUjBwV2R0TTdKZU1IbXZ6NEhHM3E4Q1c3bDdOQjhveHdvTVgxdkVCUUkKdDduM0RiT2JsS0ZlQk5UNGliRWNzU3RTUmdwcUFLZ002ai9xSEgxaXdZaXFKYUNsN1lweGxaTWpmRUFSaHdiegpwaC9QVDd3R2doUEswM1RUT1R1K1ZvdE5hZzVhejRZTS9XZ0ZpYithZFJuNFVsQnNwUUpBTWhqRk10Z2pPSDg2Cng1OTAvbmJ0WjVYWDNVZU9uMXVLMHBkZGhjS0k5SzE0cUlwbVNoOVYyQS90SVpOb0h2dnBRT201elhEeER0NWgKUk5jRFN5cWhnekNUcHZ4ZXBmZ3Y0YjcwZUJwZjZGeXZzZDBpV2RQR3E4RUtNMmJJdkpuek4wS0lBbTNQUVhTWAo4K0w0Wk9SajM2Z3ZVSlVubmdVVko5eE5QS2JzKzZ3VU5RQzRnUzcyWVFLQmdRRFlHM2cxZ2RVaWJjU2tVT3pICkpzRnF4ZENFM0EwdmY1amRhdkhaR0ZzeTJaZ2lBZWQ3c3FCQTNTRXFxa0gvVDdzYnlqeDJZd2JQZUVkbWUzbVYKMllxRk5CY2RBd3VuWERwa2ZRTFhodmFYRC9mRHhlSjFnQ01zR3AwNTgzZlhGZHFLb2hnMjZYUEpjWFBGSk5JbgpVVVZLRXJFSmFIZU42bGlHSUxJa3czTjl0UUtCZ1FEakFlbDNQZmNlbmE4dXZ4cUU3S0x1RXdIcXRlL0tVb20yClpYdVhlekFSVVIybmY1Tzd4SFkzMzR6MS9iZngrWUFhaEI3V2ZRdGxNZ1hRUGx6K1RhcHl1TGFwZXVUaDNEYUkKRlhNaEZ3eDFJRC9BMEc3U3oybHUySkUvWDRyUDNlSXljRS9IWnNsMlpTUmdRRVZ6eVhDdkpseHVDMlFaaWNjMgpVM3FTQ3lxQTZ3S0JnRDZEZzd5R3VDN2piZlRTYkF3WUMrOWxGYks1TFI5R1crUUJJY0RaS05pRzFWbFJEN05hCnNyelF1dDFxcnZpNkNiZzZRazlFeWgyTi82bUhvbDVVdFp0ZXZDanFUcDYxTVRjTWFwd0tNSjcyUVlmaVlHWDUKRVRPYTUweHlQNEo2a2VOMGpHaW1FNVo4T1M4WVBhcWQrZHM1bVBqTnZYZlNDSldVTTdRcXplZlpBb0dBUEJSbwpkcyttbEtyRkQ0a3llcFdxZFhvQVd0ODJESVVWdjNsU1lZQVA4N1ZWTk54MS9BNzkvc0dpckFRdlo5SlJ6akxECmVwN3pvaC9BSENJMU9IVFR0TE1nWFBDU25SaE1NbTRDMzNJYk1QQ05Edm5iS3Q0TUdITW0xZS95YkJ0Y1gxOE0KTGtrTTd0SEw4OUZ1MERzeklKZjFoSVp0UXJrTlNWcUVxUnhkYm1zQ2dZRUFuU25sT1BwcE11TnVJM29oMHJKUwpCcDFodkx1ajIxRkpjcjNKMjlycStLcmV4c3VZczUwRW9JUDU3SjQ4TUVKK1J1UWxMU0MzYkI1TU1ScnIxb0l1ClN4Wi9na0FXMW8zK0lzK2hUOE5kODNwQm5LVU9RajdrS2wwUEZCVnR3cTVYMXFHckg2clUyZ1VBaWF1bmtVVCsKUnFPVWNvTnZRWVlaNkFFdHB6Vk1BZEU9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+---
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kube-system
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: kubernetes-dashboard
+  template:
+    metadata:
+      labels:
+        k8s-app: kubernetes-dashboard
+    spec:
+      containers:
+      - name: kubernetes-dashboard
+        image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
+        ports:
+        - containerPort: 8443
+          protocol: TCP
+        args:
+#          - --enable-insecure-login
+#          - --port=8444
+#          - --insecure-port=8443
+#          - --insecure-bind-address=0.0.0.0
+           - --auto-generate-certificates
+          # Uncomment the following line to manually specify Kubernetes API server Host
+          # If not specified, Dashboard will attempt to auto discover the API server and connect
+          # to it. Uncomment only if the default does not work.
+          # - --apiserver-host=http://my-address:port
+        volumeMounts:
+          # Create on-disk volume to store exec logs
+        - mountPath: /tmp
+          name: tmp-volume
+        livenessProbe:
+          httpGet:
+#            scheme: HTTP
+            scheme: HTTPS
+            path: /
+            port: 8443
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+      serviceAccountName: kubernetes-dashboard
+      # Comment the following tolerations if Dashboard must not be deployed on master
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kube-system
+spec:
+  ports:
+    - port: 443
+      targetPort: 8443
+  selector:
+    k8s-app: kubernetes-dashboard
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  selfLink: /apis/extensions/v1beta1/namespaces/kube-system/ingresses/kubernetes-dashboard
+spec:
+  rules:
+  - host: k8s-dashboard.local
+    http:
+      paths:
+      - backend:
+          serviceName: kubernetes-dashboard
+          servicePort: 443
+  tls:
+  - secretName: k8s-dashboard-ssl

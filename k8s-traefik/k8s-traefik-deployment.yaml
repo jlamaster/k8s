@@ -1,17 +1,8 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "14"
-  creationTimestamp: null
-  generation: 1
-  labels:
-    app: traefik
-    chart: traefik-1.59.1
-    heritage: Tiller
-    release: traefik
   name: traefik
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/traefik
+  namespace: default
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -43,7 +34,7 @@ spec:
         - --insecureskipverify
         - --kubernetes
         - --logLevel="DEBUG"
-        image: traefik:1.7.7
+        image: traefik:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -58,14 +49,11 @@ spec:
         - containerPort: 80
           name: http
           protocol: TCP
-        - containerPort: 8880
-          name: httpn
-          protocol: TCP
         - containerPort: 443
           name: https
           protocol: TCP
         - containerPort: 8080
-          name: dash
+          name: dashboard
           protocol: TCP
         readinessProbe:
           failureThreshold: 1
@@ -86,7 +74,9 @@ spec:
         terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /ssl
-          name: ssl
+          name: traefik-dashboard-ssl
+#        - mountPath: /ssl/k8s
+#          name: k8s-dashboard-certs
         - mountPath: /config
           name: config
       dnsPolicy: ClusterFirst
@@ -97,12 +87,15 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 60
       volumes:
-      - name: ssl
+      - name: traefik-dashboard-ssl
         secret:
           defaultMode: 420
-          secretName: k8s-dashboard-crt
+          secretName: traefik-dashboard-ssl
+#      - name: k8s-dashboard-certs
+#        secret:
+#          defaultMode: 420
+#          secretName: k8s-dashboard-secret
       - configMap:
           defaultMode: 420
           name: traefik
         name: config
-status: {}

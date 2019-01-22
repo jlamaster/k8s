@@ -1,11 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
   annotations:
     kubernetes.io/ingress.class: traefik
-  creationTimestamp: null
-  generation: 1
-  name: kubernetes-dashboard
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
   selfLink: /apis/extensions/v1beta1/namespaces/kube-system/ingresses/kubernetes-dashboard
 spec:
   rules:
@@ -14,6 +16,6 @@ spec:
       paths:
       - backend:
           serviceName: kubernetes-dashboard
-          servicePort: k8s-dashboard
-status:
-  loadBalancer: {}
+          servicePort: 443
+  tls:
+  - secretName: k8s-dashboard-ssl

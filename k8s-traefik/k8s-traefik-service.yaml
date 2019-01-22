@@ -1,24 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
-  labels:
-    app: traefik
-    chart: traefik-1.59.1
-    heritage: Tiller
-    release: traefik
   name: traefik
-  selfLink: /api/v1/namespaces/default/services/traefik
+  namespace: default
 spec:
   externalTrafficPolicy: Cluster
   ports:
   - name: http
-    nodePort: 31728
     port: 80
     protocol: TCP
     targetPort: http
   - name: https
-    nodePort: 31187
     port: 443
     protocol: TCP
     targetPort: https
@@ -27,5 +19,3 @@ spec:
     release: traefik
   sessionAffinity: None
   type: LoadBalancer
-status:
-  loadBalancer: {}

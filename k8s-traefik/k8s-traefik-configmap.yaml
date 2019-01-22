@@ -2,7 +2,7 @@ apiVersion: v1
 data:
   traefik.toml: |
     # traefik.toml
-    logLevel = "INFO"
+    logLevel = "DEBUG"
     defaultEntryPoints = ["http", "https"]
     [entryPoints]
       [entryPoints.http]
@@ -10,14 +10,15 @@ data:
       compress = true
       [entryPoints.https]
       address = ":443"
-      [entryPoints.https.tls]
-        [[entryPoints.https.tls.certificates]]
-          certFile = "/ssl/k8s-dashboard.local.crt"
-          keyFile = "/ssl/k8s-dashboard.local.key"
+        [entryPoints.https.tls]
+          [[entryPoints.https.tls.certificates]]
+            certFile = "/ssl/traefik-dashboard.local.crt"
+            keyFile = "/ssl/traefik-dashboard.local.key"
       compress = true
       [entryPoints.traefik]
       address = ":8080"
     [kubernetes]
+    namespaces = ["default", "kube-system"]
     [traefikLog]
       format = "json"
     [api]
@@ -25,11 +26,5 @@ data:
       dashboard = true
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
-  labels:
-    app: traefik
-    chart: traefik-1.59.1
-    heritage: Tiller
-    release: traefik
   name: traefik
-  selfLink: /api/v1/namespaces/default/configmaps/traefik
+  namespace: default
