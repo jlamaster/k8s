@@ -18,13 +18,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        checksum/config: 8ddc33e3917855d50dff9147dd7922b72b85b8cf862959f197046e9a0b02919c
-      creationTimestamp: null
       labels:
         app: traefik
-        chart: traefik-1.59.1
-        heritage: Tiller
         release: traefik
     spec:
       containers:
@@ -33,6 +28,7 @@ spec:
         - --api
         - --insecureskipverify
         - --kubernetes
+        - --web.metrics.prometheus
         - --logLevel="DEBUG"
         image: traefik:latest
         imagePullPolicy: IfNotPresent
