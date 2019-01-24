@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: alertmanager-dashboard
+spec:
+  rules:
+  - host: alertmanager-dashboard.local
+    http:
+      paths:
+      - backend:
+          serviceName: alertmanager
+          servicePort: 9093
+#  tls:
+#  - secretName: prometheus-dashboard-ssl
