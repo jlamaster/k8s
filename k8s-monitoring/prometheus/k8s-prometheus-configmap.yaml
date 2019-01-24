@@ -1,35 +1,19 @@
 apiVersion: v1
 kind: ConfigMap
-metadata:
-  name: prometheus-server-conf
-  labels:
-    name: prometheus-server-conf
-  namespace: monitoring
 data:
-  prometheus.rules: |-
-    groups:
-    - name: devopscube demo alert
-      rules:
-      - alert: High Pod Meory
-        expr: sum(container_memory_usage_bytes) > 1
-        for: 1m
-        labels:
-          severity: slack
-        annotations:
-          summary: High Memory Usage
-  prometheus.yml: |-
+  prometheus.yaml: |
     global:
-      scrape_interval: 5s
-      evaluation_interval: 5s
+      scrape_interval: 15s
+      evaluation_interval: 15s
     rule_files:
-      - /etc/prometheus/prometheus.rules
+      - /etc/prometheus/rules/*.yaml
     alerting:
       alertmanagers:
       - scheme: http
         static_configs:
         - targets:
           - "alertmanager.monitoring.svc:9093"
-
+          
     scrape_configs:
       - job_name: 'prometheus'
           # metrics_path defaults to '/metrics'
@@ -160,3 +144,45 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  rules.yaml: |
+    groups:
+    - name: devopscube demo alert
+      rules:
+      - alert: High Pod Meory
+        expr: sum(container_memory_usage_bytes) > 1
+        for: 1m
+        labels:
+          severity: slack
+        annotations:
+          summary: High Memory Usage
+    - name: DMS
+      rules:
+      - alert: DeadMansSwitch
+        annotations:
+          description: This is a DeadMansSwitch meant to ensure that the entire Alerting
+            pipeline is functional.
+          summary: Alerting DeadMansSwitch
+        expr: vector(1)
+        labels:
+          severity: none
+#    - name: etcd
+#      rules:
+#      - alert: NoLeader
+#        expr: etcd_server_has_leader{job="kube-etcd"} == 0
+#        for: 1m
+#        labels:
+#          severity: critical
+#          k8s-component: etcd
+#        annotations:
+#          description: etcd member {{ $labels.instance }} has no leader
+#          summary: etcd member has no leader
+metadata:
+  name: prometheus-rules
+  namespace: monitoring
