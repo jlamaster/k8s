@@ -1,66 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: alertmanager-deployment
+  name: alertmanager
   namespace: monitoring
-  labels:
-     app: alertmanager
 spec:
-   replicas: 1
-   selector:
-     matchLabels:
-       app: alertmanager
-   template:
-      metadata:
-         labels:
-           app: alertmanager
-      spec:
-        containers:
-         - name: alertmanager
-           image: prom/alertmanager
-           volumeMounts:
-              - name: alertmanager-config
-                mountPath: /etc/alertmanager/alertmanager.yaml
-                subPath: alertmanager.yaml
-           ports:
-           - containerPort: 9093
-        volumes:
-         - name: alertmanager-config
-           configMap:
-             name: alertmanager-config
----
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: prometheus-deployment
-#  labels:
-#    app: prometheus
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: prometheus
-#  template:
-#    metadata:
-#      labels:
-#        app: prometheus
-#    spec:
-#      containers:
-#      - name: prometheus-alertmanager
-#        image: prom/prometheus
-#        volumeMounts:
-#          - name: config-volume
-#            mountPath: /etc/prometheus/prometheus.yml
-#            subPath: prometheus.yml
-#          - name: rules-general
-#            mountPath: /etc/prometheus/rules/generalrules.yaml
-#            subPath: generalrules.yaml
-#        ports:
-#        - containerPort: 9090
-#      volumes:
-#        - name: config-volume
-#          configMap:
-#           name: prometheus-config
-#        - name: rules-general
-#          configMap:
-#           name: prometheus-rules-general
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      name: alertmanager
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:latest
+        args:
+          - "--config.file=/etc/alertmanager/config.yml"
+          - "--storage.path=/alertmanager"
+        ports:
+        - name: alertmanager
+          containerPort: 9093
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/alertmanager
+        - name: templates-volume
+          mountPath: /etc/alertmanager-templates
+        - name: alertmanager
+          mountPath: /alertmanager
+      volumes:
+      - name: config-volume
+        configMap:
+          name: alertmanager-config
+      - name: templates-volume
+        configMap:
+          name: alertmanager-templates
+      - name: alertmanager
+        emptyDir: {}

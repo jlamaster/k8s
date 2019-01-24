@@ -194,7 +194,7 @@ data:
             severity: slack
           group_wait: 10s
           repeat_interval: 1m
- 
+
     receivers:
     - name: alert-emailer
       email_configs:
@@ -256,20 +256,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: alertmanager
+  name: alertmanager-service
   namespace: monitoring
   annotations:
       prometheus.io/scrape: 'true'
       prometheus.io/path:   /
       prometheus.io/port:   '8080'
 spec:
-  selector: 
+  selector:
     app: alertmanager
-  type: ClusterIP  
   ports:
-    - port: 9093
-      targetPort: 9093
-      protocol: TCP
+  - name: alertmanager-dashboard
+    protocol: TCP
+    port: 9093
+    targetPort: 9093
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
