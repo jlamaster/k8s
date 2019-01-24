@@ -253,41 +253,41 @@ spec:
       - name: alertmanager
         emptyDir: {}
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: alertmanager-service
+  name: alertmanager
   namespace: monitoring
   annotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/path:   /
-    prometheus.io/port:   '8080'
+      prometheus.io/scrape: 'true'
+      prometheus.io/path:   /
+      prometheus.io/port:   '8080'
 spec:
-  selector:
-    app: alertmanager-service
+  selector: 
+    app: alertmanager
+  type: ClusterIP  
   ports:
-  - name: alertui
-    protocol: TCP
-    port: 9093
-    targetPort: 9093
+    - port: 9093
+      targetPort: 9093
+      protocol: TCP
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  namespace: monitoring
   annotations:
     kubernetes.io/ingress.class: traefik
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
 #    traefik.ingress.kubernetes.io/redirect-permanent: "true"
   name: alertmanager-dashboard
-  namespace: monitoring
 spec:
   rules:
   - host: alertmanager-dashboard.local
     http:
       paths:
       - backend:
-          serviceName: alertmanager-service
+          serviceName: alertmanager
           servicePort: 9093
 #  tls:
 #  - secretName: prometheus-dashboard-ssl
