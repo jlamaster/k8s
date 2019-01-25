@@ -8,7 +8,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus
+      app: prometheus-server
   volumeClaimTemplates:
   - metadata:
       name: prometheus-metrics-db
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: prometheus
+        app: prometheus-server
     spec:
       securityContext:
         runAsUser: 1000
