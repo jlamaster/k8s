@@ -227,47 +227,102 @@ metadata:
   name: prometheus-rules
   namespace: monitoring
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: prometheus-deployment
+  name: prometheus
   namespace: monitoring
 spec:
-  replicas: 1
+  serviceName: prometheus
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prometheus
+  volumeClaimTemplates:
+  - metadata:
+      name: prometheus-metrics-db
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 30Gi
   template:
     metadata:
       labels:
-        app: prometheus-server
+        app: prometheus
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 2000
+        runAsNonRoot: true
       containers:
-        - name: prometheus
-          image: prom/prometheus
-          args:
-            - "--config.file=/etc/prometheus/prometheus.yaml"
-            - "--storage.tsdb.path=/prometheus/"
-          ports:
-            - containerPort: 9090
-          volumeMounts:
-            - name: config-volume
-              mountPath: /etc/prometheus/prometheus.yaml
-              subPath: prometheus.yaml
-            - name: rules-volume
-              mountPath: /etc/prometheus/rules/rules.yaml
-              subPath: rules.yaml
-            - name: prometheus-storage-volume
-              mountPath: /prometheus/
+      - args:
+        - "--storage.tsdb.path=/data"
+        - "--storage.tsdb.retention=130d"
+        - "--config.file=/etc/prometheus/prometheus.yaml"
+        name: prometheus
+        image: prom/prometheus
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/prometheus/prometheus.yaml
+            subPath: prometheus.yaml
+          - name: rules-general
+            mountPath: /etc/prometheus/rules/rules.yaml
+            subPath: rules.yaml
+          - name: prometheus-metrics-db
+            mountPath: /data
+        ports:
+        - containerPort: 9090
       volumes:
-      - configMap:
-          defaultMode: 420
-          name: prometheus-config
-        name: config-volume
-      - configMap:
-          defaultMode: 420
-          name: prometheus-rules
-        name: rules-volume
-      - name: prometheus-storage-volume
-        emptyDir: {}
+        - name: config-volume
+          configMap:
+           name: prometheus-config
+        - name: rules-general
+          configMap:
+           name: rules-volume
 ---
+#apiVersion: extensions/v1beta1
+#kind: Deployment
+#metadata:
+#  name: prometheus-deployment
+#  namespace: monitoring
+#spec:
+#  replicas: 1
+#  template:
+#    metadata:
+#      labels:
+#        app: prometheus-server
+#    spec:
+#      containers:
+#        - name: prometheus
+#          image: prom/prometheus
+#          args:
+#            - "--config.file=/etc/prometheus/prometheus.yaml"
+#            - "--storage.tsdb.path=/prometheus/"
+#          ports:
+#            - containerPort: 9090
+#          volumeMounts:
+#            - name: config-volume
+#              mountPath: /etc/prometheus/prometheus.yaml
+#              subPath: prometheus.yaml
+#            - name: rules-volume
+#              mountPath: /etc/prometheus/rules/rules.yaml
+#              subPath: rules.yaml
+#            - name: prometheus-storage-volume
+#              mountPath: /prometheus/
+#      volumes:
+#      - configMap:
+#          defaultMode: 420
+#          name: prometheus-config
+#        name: config-volume
+#      - configMap:
+#          defaultMode: 420
+#          name: prometheus-rules
+#        name: rules-volume
+#      - name: prometheus-storage-volume
+#        emptyDir: {}
+#---
 apiVersion: v1
 kind: Service
 metadata:
