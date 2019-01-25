@@ -2865,7 +2865,7 @@ data:
       "title": "Kubernetes Capacity Planning",
       "uid": "MpzrdxIik",
       "version": 2
-    }  
+    } 
   prometheus-datasource.json: |
     {
       "name": "prometheus",
