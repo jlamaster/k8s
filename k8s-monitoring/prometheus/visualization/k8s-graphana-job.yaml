@@ -14,7 +14,6 @@ spec:
         app: grafana
         component: import-dashboards
     spec:
-      serviceAccountName: prometheus-k8s
       initContainers:
       - name: wait-for-grafana
         image: giantswarm/tiny-tools

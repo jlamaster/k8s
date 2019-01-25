@@ -1829,7 +1829,7 @@ data:
     {
       "name": "prometheus",
       "type": "prometheus",
-      "url": "http://prometheus:9090",
+      "url": "http://prometheus-service:8080",
       "access": "proxy",
       "basicAuth": false
     }
