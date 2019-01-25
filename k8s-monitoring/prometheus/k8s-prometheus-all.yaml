@@ -234,7 +234,7 @@ metadata:
   namespace: monitoring
 spec:
   serviceName: prometheus
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: prometheus
@@ -267,7 +267,7 @@ spec:
           - name: config-volume
             mountPath: /etc/prometheus/prometheus.yaml
             subPath: prometheus.yaml
-          - name: rules-general
+          - name: rules-volume
             mountPath: /etc/prometheus/rules/rules.yaml
             subPath: rules.yaml
           - name: prometheus-metrics-db
@@ -278,9 +278,9 @@ spec:
         - name: config-volume
           configMap:
            name: prometheus-config
-        - name: rules-general
+        - name: rules-volume
           configMap:
-           name: rules-volume
+           name: prometheus-rules
 ---
 #apiVersion: extensions/v1beta1
 #kind: Deployment
