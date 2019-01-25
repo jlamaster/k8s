@@ -256,11 +256,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: alertmanager-service
+  name: alertmanager
   namespace: monitoring
   annotations:
       prometheus.io/scrape: 'true'
-      prometheus.io/path:   /
+      prometheus.io/path:   '/metrics'
       prometheus.io/port:   '8080'
 spec:
   selector:
