@@ -233,7 +233,7 @@ metadata:
   name: prometheus
   namespace: monitoring
 spec:
-  serviceName: prometheus
+  serviceName: prometheus-service
   replicas: 1
   selector:
     matchLabels:
