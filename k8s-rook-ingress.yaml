@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: rook-dashboard
+  namespace: rook-ceph
+spec:
+  rules:
+  - host: rook-dashboard.local
+    http:
+      paths:
+      - backend:
+          serviceName: rook-ceph-mgr-dashboard
+          servicePort: 8443
+#  tls:
+#  - secretName: prometheus-dashboard-ssl

@@ -1,3 +1,46 @@
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: prometheus-pv-nfs
+#  namespace: monitoring
+#  labels:
+#    type: local
+#spec:
+#  storageClassName: manual
+#  capacity:
+#    storage: 15Gi
+#  accessModes:
+#    - ReadWriteMany
+#  nfs:
+#    server: 192.168.1.100
+#    path: "/media/jonjon/Spare-Drive/k8s"
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: prometheus-pvc-nfs
+#  namespace: monitoring
+#spec:
+#  storageClassName: manual
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 15Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: monitoring
+spec:
+  storageClassName: rook-ceph-block
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -9,15 +52,6 @@ spec:
   selector:
     matchLabels:
       app: prometheus-server
-  volumeClaimTemplates:
-  - metadata:
-      name: prometheus-metrics-db
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 30Gi
   template:
     metadata:
       labels:
@@ -52,3 +86,6 @@ spec:
         - name: rules-volume
           configMap:
            name: prometheus-rules
+        - name: prometheus-metrics-db
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
