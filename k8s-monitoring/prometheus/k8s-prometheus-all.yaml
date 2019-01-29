@@ -256,20 +256,21 @@ metadata:
 #  resources:
 #    requests:
 #      storage: 15Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-  namespace: monitoring
-spec:
-  storageClassName: rook-ceph-block
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
----
+   #Rook
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: mysql-pv-claim
+#  namespace: monitoring
+#spec:
+#  storageClassName: rook-ceph-block
+#  accessModes:
+#  - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 25Gi
+#---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -280,11 +281,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus-server
+      app: prometheus
   template:
     metadata:
       labels:
-        app: prometheus-server
+        app: prometheus
     spec:
       securityContext:
         runAsUser: 1000
@@ -316,8 +317,13 @@ spec:
           configMap:
            name: prometheus-rules
         - name: prometheus-metrics-db
-          persistentVolumeClaim:
-            claimName: mysql-pv-claim
+          hostPath: 
+            path: /C/Users/P0113789/Documents/hybris-default/kube/data/prometheus
+            type: DirectoryOrCreate
+    #Rook
+#        - name: prometheus-metrics-db
+#          persistentVolumeClaim:
+#            claimName: mysql-pv-claim
 ---
 #apiVersion: extensions/v1beta1
 #kind: Deployment
@@ -376,7 +382,7 @@ spec:
       protocol: TCP
       targetPort: 9090
   selector:
-    app: prometheus-server
+    app: prometheus
   sessionAffinity: None
   type: ClusterIP
 ---
