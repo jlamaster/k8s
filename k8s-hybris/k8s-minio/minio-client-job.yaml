@@ -1,31 +1,32 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.16.0 (0c01309)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: minio-client
-  name: minio-client
+  name: minio-import-hybris-bucket
 spec:
-  replicas: 1
-  strategy: {}
   template:
     metadata:
-      creationTimestamp: null
-      labels:
-        io.kompose.service: minio-client
+      name: minio-import-hybris-bucket
     spec:
-      containers:
-      - command:
+      initContainers:
+      - name: wait-for-minio
+        image: giantswarm/tiny-tools
+        args:
         - /bin/sh
         - -c
-        - ' sleep 8s; /usr/bin/mc config host add hybrisminio http://minio-server:9000  ;
+        - >
+          set -x;
+          while [ $(curl -sw '%{http_code}' "http://minio.local:9000" -o /dev/null) -ne 200]; do
+            echo '.'
+            sleep 15;
+          done
+      containers:
+      - name: minio-inital-data-hybris
+        image: minio/mc
+        command:
+        - /bin/sh
+        - -c
+        - '/usr/bin/mc config host add hybrisminio http://minio-server:9000  ;
           /usr/bin/mc mb hybrisminio/; /usr/bin/mc policy public hybrisminio/; exit
           0;'
-        image: minio/mc
-        name: minio-client
-        resources: {}
-      restartPolicy: Always
-status: {}
+      restartPolicy: Never
+

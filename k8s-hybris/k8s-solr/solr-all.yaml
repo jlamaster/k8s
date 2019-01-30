@@ -1,0 +1,120 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  labels:
+    app: solr
+  name: solr
+spec:
+  serviceName: solr-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solr # has to match .spec.template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: solr
+    spec:
+      containers:
+      - args:
+        - standalone
+        image: pacteradeg/hybris-solr
+        name: solr
+        ports:
+        - containerPort: 8983
+        resources: {}
+#        readinessProbe:
+#          tcpSocket:
+#            port: 8080
+#          initialDelaySeconds: 5
+#          periodSeconds: 10
+#        livenessProbe:
+#          tcpSocket:
+#            port: 8080
+#          initialDelaySeconds: 15
+#          periodSeconds: 20
+#        livenessProbe:
+#          httpGet:
+#            path: /minio/health/live
+#            port: 9000
+#          initialDelaySeconds: 120
+#          periodSeconds: 20
+#        readinessProbe:
+#          httpGet:
+#            path: /healthz
+#            port: 80
+#            httpHeaders:
+#              - name: Host
+#                value: KubernetesLivenessProbe
+#          initialDelaySeconds: 20
+#        volumeMounts:
+#        - mountPath: /opt/solr
+#          name: hybris-solr-data
+      restartPolicy: Always
+  volumeClaimTemplates:
+  - metadata:
+      name: hybris-solr-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: solr
+  name: solr
+spec:
+  type: ClusterIP
+  ports:
+  - name: solr-service
+    port: 8983
+    targetPort: 8983
+    protocol: TCP
+  selector:
+    app: solr
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: solr-dashboard
+spec:
+  rules:
+  - host: solr-dashboard.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: solr-service
+          servicePort: 8983
+#  tls:
+#  - secretName: solr-ssl
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: solr-app
+spec:
+  rules:
+  - host: solr.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: solr-service
+          servicePort: 8983
+#  tls:
+#  - secretName: solr-ssl

@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: solr-dashboard
+spec:
+  rules:
+  - host: solr.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: solr-service
+          servicePort: 8983
+#  tls:
+#  - secretName: solr-ssl
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: solr-app
+spec:
+  rules:
+  - host: solr.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: solr-service
+          servicePort: 8983
+#  tls:
+#  - secretName: solr-ssl
