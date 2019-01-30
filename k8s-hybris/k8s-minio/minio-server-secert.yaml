@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+data:
+  minio-access-key: YWRtaW4xMjM=
+  minio-secret-key: bmltZGExMjM=
+metadata:
+  name: minio-secret
+type: Opaque

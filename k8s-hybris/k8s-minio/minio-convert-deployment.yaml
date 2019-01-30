@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.16.0 (0c01309)
+    traefik.backend: minio-server
+    traefik.docker.network: b2c-minio_hybris
+    traefik.enable: "true"
+    traefik.frontend.headers.SSLRedirect: "true"
+    traefik.frontend.headers.SSLTemporaryRedirect: "true"
+    traefik.frontend.redirect.entryPoint: https
+    traefik.frontend.rule: Host:minio.local
+    traefik.port: "9000"
+    traefik.protocol: http
+  creationTimestamp: null
+  labels:
+    io.kompose.service: minio-server
+  name: minio-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: minio-server
+    spec:
+      containers:
+      - args:
+        - server
+        - /data
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: admin123
+        - name: MINIO_SECRET_KEY
+          value: nimda123
+        image: minio/minio:latest
+        name: minio-server
+        ports:
+        - containerPort: 9000
+        resources: {}
+        volumeMounts:
+        - mountPath: /data
+          name: hybris-minio-data
+      hostname: minio
+      restartPolicy: Always
+      volumes:
+      - name: hybris-minio-data
+        persistentVolumeClaim:
+          claimName: hybris-minio-data
+status: {}
