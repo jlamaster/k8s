@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hybris-mysql-pxc
+  name: hybris-mysql-pxc-local-replica
+  namespace: default
+spec:
+  clusterIP: 10.107.250.194
+  ports:
+  - name: mysql
+    port: 4567
+    protocol: TCP
+  selector:
+    app: hybris-mysql-pxc
+    release: hybris-mysql
+  sessionAffinity: None
+  type: NodePort
