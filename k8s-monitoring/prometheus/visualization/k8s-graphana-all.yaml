@@ -2865,7 +2865,7 @@ data:
       "title": "Kubernetes Capacity Planning",
       "uid": "MpzrdxIik",
       "version": 2
-    } 
+    }
   prometheus-datasource.json: |
     {
       "name": "prometheus",
@@ -2879,22 +2879,22 @@ metadata:
   creationTimestamp: null
   name: grafana-import-dashboards
   namespace: monitoring
----
+#---
   #Rook
-#---
-#apiVersion: v1
-#kind: PersistentVolumeClaim
-#metadata:
-#  name: graphana-pv-claim
-#  namespace: monitoring
-#spec:
-#  storageClassName: rook-ceph-block
-#  accessModes:
-#  - ReadWriteOnce
-#  resources:
-#    requests:
-#      storage: 25Gi
-#---
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: graphana-pv-claim
+  namespace: monitoring
+spec:
+  storageClassName: rook-ceph-block
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Gi
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -2970,14 +2970,14 @@ spec:
         - name: grafana-persistent-storage
           mountPath: /var/lib/grafana
       volumes:
-      - name: grafana-persistent-storage
-        hostPath: 
-          path: /C/Users/P0113789/Documents/hybris-default/kube/data/graphana
-          type: DirectoryOrCreate
+#      - name: grafana-persistent-storage
+#        hostPath:
+#          path: /C/Users/P0113789/Documents/hybris-default/kube/data/graphana
+#          type: DirectoryOrCreate
           #Rook
-#     - name: grafana-persistent-storage
-#       persistentVolumeClaim:
-#         claimName: graphana-pv-claim
+       - name: grafana-persistent-storage
+         persistentVolumeClaim:
+           claimName: graphana-pv-claim
 ---
 #apiVersion: extensions/v1beta1
 #kind: Deployment
@@ -3139,7 +3139,35 @@ spec:
                   --data-binary "@-" ;
                 echo "" ;
               fi
-            done
+              done ;
+              for file in *-dashboard.json ; do
+                if [ -e "$file" ] ; then
+                  echo "importing $file" &&
+                  ( echo '{"dashboard":'; \
+                    cat "$file"; \
+                    echo ',"overwrite":true,"inputs":[{"name":"DS_PROMETHEUS","type":"datasource","pluginId":"prometheus","value":"prometheus"}]}' ) \
+                  | jq -c '.' \
+                  | curl --silent --fail --show-error \
+                    --request POST http://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@grafana:3000/api/dashboards/import \
+                    --header "Content-Type: application/json" \
+                    --data-binary "@-" ;
+                  echo "" ;
+                fi
+                done ;
+                for file in *-dashboard.json ; do
+                  if [ -e "$file" ] ; then
+                    echo "importing $file" &&
+                    ( echo '{"dashboard":'; \
+                      cat "$file"; \
+                      echo ',"overwrite":true,"inputs":[{"name":"DS_PROMETHEUS","type":"datasource","pluginId":"prometheus","value":"prometheus"}]}' ) \
+                    | jq -c '.' \
+                    | curl --silent --fail --show-error \
+                      --request POST http://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@grafana:3000/api/dashboards/import \
+                      --header "Content-Type: application/json" \
+                      --data-binary "@-" ;
+                    echo "" ;
+                  fi
+                done ;
         env:
         - name: GF_ADMIN_USER
           valueFrom:
