@@ -1,11 +1,10 @@
-apiVersion: apps/v1beta1
-kind: StatefulSet
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
+  name: solr
   labels:
     app: solr
-  name: solr
 spec:
-  serviceName: solr-service
   replicas: 1
   selector:
     matchLabels:
@@ -48,15 +47,14 @@ spec:
 #                value: KubernetesLivenessProbe
 #          initialDelaySeconds: 20
         volumeMounts:
-        - mountPath: /opt/solr/server/solr/data
+        - mountPath: /opt/solr-data
           name: hybris-solr-data
-      restartPolicy: Always
-  volumeClaimTemplates:
-  - metadata:
-      name: hybris-solr-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 10Gi
-      storageClassName: standard
+      volumes:
+      - name: hybris-solr-data
+        flexVolume:
+          driver: ceph.rook.io/rook
+          fsType: ceph
+          options:
+            fsName: minikube-fs
+            clusterNamespace: rook-ceph
+        
