@@ -47,19 +47,19 @@ spec:
 #              - name: Host
 #                value: KubernetesLivenessProbe
 #          initialDelaySeconds: 20
-#        volumeMounts:
-#        - mountPath: /opt/solr
-#          name: hybris-solr-data
+        volumeMounts:
+        - mountPath: /opt/solr/server/solr/data
+          name: hybris-solr-data
       restartPolicy: Always
   volumeClaimTemplates:
   - metadata:
       name: hybris-solr-data
     spec:
-      accessModes:
-        - ReadWriteOnce
+      accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
           storage: 10Gi
+      storageClassName: standard
 ---
 apiVersion: v1
 kind: Service
@@ -93,7 +93,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: solr-service
+          serviceName: solr
           servicePort: 8983
 #  tls:
 #  - secretName: solr-ssl
@@ -106,7 +106,7 @@ metadata:
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
 #    traefik.ingress.kubernetes.io/redirect-permanent: "true"
-  name: solr-app
+  name: solr
 spec:
   rules:
   - host: solr.local
@@ -114,7 +114,16 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: solr-service
+          serviceName: solr
+          servicePort: 8983
+#  tls:
+#  - secretName: solr-ssl
+  - host: solr-dashboard.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: solr
           servicePort: 8983
 #  tls:
 #  - secretName: solr-ssl

@@ -408,7 +408,7 @@ spec:
         image: rook/ceph:master
         args: ["ceph", "operator"]
         volumeMounts:
-        - mountPath: /var/lib/rook
+        - mountPath: /data/rook
           name: rook-config
         - mountPath: /etc/ceph
           name: default-config-dir
