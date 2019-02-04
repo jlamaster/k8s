@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: hybris
+spec:
+  rules:
+  - host: hybris-admin.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hybris
+          servicePort: 9002
+  - host: elecronics.local
+    http:
+      paths:
+      - path: /yacceleratorstorefront
+        backend:
+          serviceName: hybris
+          servicePort: 9002
+  - host: hybris-backoffice.local
+    http:
+      paths:
+      - path: /backoffice
+        backend:
+          serviceName: hybris
+          servicePort: 9002

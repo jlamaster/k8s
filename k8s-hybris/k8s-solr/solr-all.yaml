@@ -19,6 +19,11 @@ spec:
       - args:
         - standalone
         image: pacteradeg/hybris-solr
+        env:
+        - name: SOLR_DATA_HOME
+          value: /opt/solr/server/solr/data
+        - name: SOLR_ENVIRONMENT
+          value: dev
         name: solr
         ports:
         - containerPort: 8983
@@ -47,6 +52,7 @@ spec:
 #              - name: Host
 #                value: KubernetesLivenessProbe
 #          initialDelaySeconds: 20
+        imagePullPolicy: Always
         volumeMounts:
         - mountPath: /opt/solr/server/solr/data
           name: hybris-solr-data
@@ -59,7 +65,7 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: standard
+      storageClassName: rook-ceph-block
 ---
 apiVersion: v1
 kind: Service

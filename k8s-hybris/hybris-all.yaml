@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  10-local.properties: |
+    db.url=jdbc:mysql://mysql:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
+    db.username=root
+    db.password=nimda
+
+    cluster.nodes.ping.interval=2
+    cluster.nodes.stale.timeout=1
+
+    #Mino Settings
+    default.storage.strategy=s3MediaStorageStrategy
+    default.url.strategy=minioS3MediaURLStrategy
+    media.default.storage.strategy=s3MediaStorageStrategy
+    media.default.url.strategy=minioS3MediaURLStrategy
+
+    media.globalSettings.s3MediaStorageStrategy.bucketId=media-storage
+    media.globalSettings.s3MediaStorageStrategy.accessKeyId=admin123
+    media.globalSettings.s3MediaStorageStrategy.secretAccessKey=nimda123
+    media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
+
+    media.globalSettings.s3MediaStorageStrategy.url.signed=false
+    media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
+    media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
+    media.globalSettings.s3MediaStorageStrategy.url.validFor=120
+    media.globalSettings.s3MediaStorageStrategy.cleanOnInit=true
+
+    cluster.nodes.autodiscovery=false
+    cluster.nodes.ping.interval=200
+    cluster.nodes.stale.timeout=300
+    clustermode=false
+    cluster.broadcast.methods=jgroups
+    cluster.broadcast.method.jgroups=de.hybris.platform.cluster.jgroups.JGroupsBroadcastMethod
+    cluster.broadcast.method.jgroups.channel.name=hybris-broadcast
+    cluster.broadcast.method.jgroups.configuration=jgroups-tcp.xml
+metadata:
+  name: hybris-override-config
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: hybris
+  name: hybris
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hybris
+    spec:
+      containers:
+        - name: hybris
+          image: pacteradeg/hybris-ootb-redis:b2c-minio-1808
+          env:
+          - name: PLATFORM_HOME
+            value: /opt/hybris/bin/platform
+          - name: HYBRIS_OPT_CONFIG_DIR
+            value: /opt/hybris/config/override
+          - name: HYBRIS_OPT_CONFIG
+            value: /opt/hybris/config/override
+          ports:
+          - containerPort: 9002
+          resources: {}
+          volumeMounts:
+          - name: hybris-override
+            mountPath: /opt/hybris/config/override/10-local.properties
+            subPath: 10-local.properties
+      volumes:
+        - name: hybris-override
+          configMap:
+            name: hybris-override-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hybris
+  name: hybris-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: hybris
+    port: 9002
+    targetPort: 9002
+  selector:
+    app: hybris
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: hybris
+spec:
+  rules:
+  - host: hybris-admin.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hybris
+          servicePort: 9002
+  - host: elecronics.local
+    http:
+      paths:
+      - path: /yacceleratorstorefront
+        backend:
+          serviceName: hybris
+          servicePort: 9002
+  - host: hybris-backoffice.local
+    http:
+      paths:
+      - path: /backoffice
+        backend:
+          serviceName: hybris
+          servicePort: 9002

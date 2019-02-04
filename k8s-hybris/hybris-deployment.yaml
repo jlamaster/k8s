@@ -1,42 +1,34 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.16.0 (0c01309)
-    traefik.backend: electronics.local
-    traefik.backend.healthcheck.hostname: electronics.local
-    traefik.backend.healthcheck.port: "9002"
-    traefik.backend.healthcheck.scheme: https
-    traefik.backend.loadbalancer.stickiness: "true"
-    traefik.docker.network: b2c-minio_hybris
-    traefik.domain: electronis.local
-    traefik.enable: "true"
-    traefik.frontend.entryPoints: http,https
-    traefik.frontend.headers.SSLRedirect: "true"
-    traefik.frontend.headers.SSLTemporaryRedirect: "true"
-    traefik.frontend.redirect.entryPoint: https
-    traefik.frontend.rule: Host:electronics.local,apparel-uk.local,apparel-de.local
-    traefik.port: "9002"
-    traefik.protocol: https
-  creationTimestamp: null
   labels:
-    io.kompose.service: hybris
+    app: hybris
   name: hybris
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: hybris
+        app: hybris
     spec:
       containers:
-      - image: pacteradeg/hybris-ootb-redis:-
-        name: hybris
-        ports:
-        - containerPort: 9002
-        resources: {}
-      restartPolicy: Always
-status: {}
+        - name: hybris
+          image: pacteradeg/hybris-ootb-redis:b2c-minio-1808
+          env:
+          - name: PLATFORM_HOME
+            value: /opt/hybris/bin/platform
+          - name: HYBRIS_OPT_CONFIG_DIR
+            value: /opt/hybris/config/override
+          - name: HYBRIS_OPT_CONFIG
+            value: /opt/hybris/config/override
+          ports:
+          - containerPort: 9002
+          resources: {}
+          volumeMounts:
+          - name: hybris-override
+            mountPath: /opt/hybris/config/override/10-local.properties
+            subPath: 10-local.properties
+      volumes:
+        - name: hybris-override
+          configMap:
+            name: hybris-override-config

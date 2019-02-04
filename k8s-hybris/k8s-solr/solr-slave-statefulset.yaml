@@ -2,24 +2,27 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   labels:
-    app: solr
-  name: solr
+    app: solr-slave
+  name: solr-slave
 spec:
-  serviceName: solr-service
+  serviceName: solr-slave-service
   replicas: 1
   selector:
     matchLabels:
-      app: solr # has to match .spec.template.metadata.labels
+      app: solr-slave # has to match .spec.template.metadata.labels
   template:
     metadata:
       labels:
-        app: solr
+        app: solr-slave
     spec:
       containers:
       - args:
         - standalone
         image: pacteradeg/hybris-solr
-        name: solr
+        env:
+        - name: SOLR_DATA_HOME
+          value: /opt/solr/server/solr/data
+        name: solr-slave
         ports:
         - containerPort: 8983
         resources: {}
@@ -47,10 +50,18 @@ spec:
 #              - name: Host
 #                value: KubernetesLivenessProbe
 #          initialDelaySeconds: 20
+        imagePullPolicy: Always
         volumeMounts:
         - mountPath: /opt/solr/server/solr/data
           name: hybris-solr-data
+        - name: solr-config
+          mountPath: /opt/solr/server/solr/configsets/default/conf/solrconfig.xml
+          subPath: solrconfig.xml
       restartPolicy: Always
+      volumes:
+        - name: solr-config
+          configMap:
+            name: solr-slave-config
   volumeClaimTemplates:
   - metadata:
       name: hybris-solr-data
@@ -59,4 +70,4 @@ spec:
       resources:
         requests:
           storage: 10Gi
-      storageClassName: standard
+      storageClassName: rook-ceph-block

@@ -6,24 +6,13 @@ metadata:
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
 #    traefik.ingress.kubernetes.io/redirect-permanent: "true"
-  name: solr
+  name: solr-slave
 spec:
   rules:
-  - host: solr.local
+  - host: solr-slave.local
     http:
       paths:
       - path: /
         backend:
-          serviceName: solr
+          serviceName: solr-slave
           servicePort: 8983
-#  tls:
-#  - secretName: solr-ssl
-  - host: solr-dashboard.local
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: solr
-          servicePort: 8983
-#  tls:
-#  - secretName: solr-ssl
