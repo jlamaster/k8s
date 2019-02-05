@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
+    external-dns.alpha.kubernetes.io/target: traefik.k8s-pactera-deg.com.
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
 #    traefik.ingress.kubernetes.io/redirect-permanent: "true"
