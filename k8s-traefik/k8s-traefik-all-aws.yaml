@@ -199,7 +199,7 @@ metadata:
     # Increase the ELB idle timeout to avoid issues with WebSockets or Server-Sent Events.
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
     # external-dns
-    external-dns.alpha.kubernetes.io/hostname: ingress.kubernetes.example.info
+    external-dns.alpha.kubernetes.io/hostname: traefik.k8s-pactera-deg.com.
 spec:
   ports:
   - name: http
@@ -244,11 +244,11 @@ metadata:
   namespace: default
 spec:
   rules:
-  - host: traefik-dashboard.local
+  - host: traefik-dashboard
     http:
       paths:
       - backend:
-          serviceName: traefik-dashboard
+          serviceName: traefik-dashboard.k8s-pactera-deg.com
           servicePort: 8080
   tls:
   - secretName: traefik-dashboard-ssl
