@@ -4,7 +4,7 @@ metadata:
   name: traefik-dashboard
   namespace: default
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: traefik-dashboard.pactera-deg.com
+    external-dns.alpha.kubernetes.io/hostname: traefik-dashboard.k8s-pactera-deg.com
 spec:
   ports:
   - name: dashboard
