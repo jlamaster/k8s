@@ -4,7 +4,7 @@ metadata:
   name: foo
   annotations:
     kubernetes.io/ingress.class: traefik # use the one that corresponds to your ingress controller.
-    external-dns.alpha.kubernetes.io/target: k8s-pactera-deg.com.
+#    external-dns.alpha.kubernetes.io/target: k8s-pactera-deg.com.
 spec:
   rules:
   - host: foo.k8s-pactera-deg.com
