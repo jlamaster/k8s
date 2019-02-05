@@ -120,7 +120,7 @@ spec:
         - --kubernetes
         - --web.metrics.prometheus
         - --logLevel="DEBUG"
-        - --ingressEndpoint
+        - --kubernetes.ingressendpoint
         image: traefik
         imagePullPolicy: IfNotPresent
         livenessProbe:
