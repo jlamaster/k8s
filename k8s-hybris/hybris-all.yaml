@@ -12,6 +12,78 @@ data:
 apiVersion: v1
 kind: ConfigMap
 data:
+  local.properties: |
+    #########################################################################################################
+    #########################################################################################################
+    ##################################### START CUSTOM PROPERTIES ###########################################
+    #########################################################################################################
+    #########################################################################################################
+
+    #### DATABASE ####
+    ## A type of MySQL database tables, for example InnoDB for transactional or MyISAM for non-transactional tables
+    #mysql.tabletype=InnoDB
+
+    #db.url=jdbc:mysql://mysql:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
+    #db.driver=com.mysql.jdbc.Driver
+    #db.username=root
+    #db.password=nimda
+    #db.tableprefix=
+    #mysql.optional.tabledefs=CHARSET=utf8 COLLATE=utf8_bin
+    #mysql.allow.fractional.seconds=true
+
+    ## Setting proper transaction isolation level is required for MySQL
+    #db.customsessionsql=SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+    ## Default solr in standalone mode
+    #solrserver.instances.default.autostart=false
+    #solrserver.instances.default.mode=standalone
+    #solrserver.instances.default.hostname=solr
+    #solrserver.instances.default.port=8983
+    #solrserver.instances.default.memory=512m
+    #solrserver.instances.default.authtype=basic
+    #solrserver.instances.default.user=solradmin
+    #solrserver.instances.default.password=admin123
+    #solrserver.instances.default.ssl.enabled=true
+    #solrserver.instances.default.ssl.keyStorePassword=123456
+    #solrserver.instances.default.ssl.trustStorePassword=123456
+
+    #Mino Settings
+    #default.storage.strategy=s3MediaStorageStrategy
+    #default.url.strategy=minioS3MediaURLStrategy
+    #media.default.storage.strategy=s3MediaStorageStrategy
+    #media.default.url.strategy=minioS3MediaURLStrategy
+
+    #media.globalSettings.s3MediaStorageStrategy.bucketId=media-storage
+    #media.globalSettings.s3MediaStorageStrategy.accessKeyId=admin123
+    #media.globalSettings.s3MediaStorageStrategy.secretAccessKey=nimda123
+    #media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
+
+    #media.globalSettings.s3MediaStorageStrategy.url.signed=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
+    #media.globalSettings.s3MediaStorageStrategy.url.validFor=120
+    #media.globalSettings.s3MediaStorageStrategy.cleanOnInit=true
+
+    #cluster.nodes.autodiscovery=true
+    #cluster.nodes.ping.interval=200
+    #cluster.nodes.stale.timeout=300
+    #clustermode=true
+    #cluster.broadcast.methods=jgroups
+    #cluster.broadcast.method.jgroups=de.hybris.platform.cluster.jgroups.JGroupsBroadcastMethod
+    #cluster.broadcast.method.jgroups.channel.name=hybris-broadcast
+    #cluster.broadcast.method.jgroups.configuration=jgroups-tcp.xml
+
+    #########################################################################################################
+    #########################################################################################################
+    #################################### END CUSTOM PROPERTIES ##############################################
+    #########################################################################################################
+    #########################################################################################################
+metadata:
+  name: hybris-config
+---
+apiVersion: v1
+kind: ConfigMap
+data:
   10-local.properties: |
     #mysql.tabletype=InnoDB
 
@@ -26,41 +98,41 @@ data:
     ## Setting proper transaction isolation level is required for MySQL
     #db.customsessionsql=SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
-    #db.url=jdbc:hsqldb:file:${HYBRIS_DATA_DIR}/hsqldb/mydb;shutdown=true;hsqldb.tx=MVCC
-    #db.driver=org.hsqldb.jdbcDriver
-    #db.username=sa
-    #db.password=
-    #db.tableprefix=
-    #hsqldb.usecachedtables=true
+    db.url=jdbc:hsqldb:file:${HYBRIS_DATA_DIR}/hsqldb/mydb;shutdown=true;hsqldb.tx=MVCC
+    db.driver=org.hsqldb.jdbcDriver
+    db.username=sa
+    db.password=
+    db.tableprefix=
+    hsqldb.usecachedtables=true
 
     cluster.nodes.ping.interval=2
     cluster.nodes.stale.timeout=1
 
     #Mino Settings
-    default.storage.strategy=s3MediaStorageStrategy
-    default.url.strategy=minioS3MediaURLStrategy
-    media.default.storage.strategy=s3MediaStorageStrategy
-    media.default.url.strategy=minioS3MediaURLStrategy
+    #default.storage.strategy=s3MediaStorageStrategy
+    #default.url.strategy=minioS3MediaURLStrategy
+    #media.default.storage.strategy=s3MediaStorageStrategy
+    #media.default.url.strategy=minioS3MediaURLStrategy
 
-    media.globalSettings.s3MediaStorageStrategy.bucketId=media-storage
-    media.globalSettings.s3MediaStorageStrategy.accessKeyId=admin123
-    media.globalSettings.s3MediaStorageStrategy.secretAccessKey=nimda123
-    media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
+    #media.globalSettings.s3MediaStorageStrategy.bucketId=media-storage
+    #media.globalSettings.s3MediaStorageStrategy.accessKeyId=admin123
+    #media.globalSettings.s3MediaStorageStrategy.secretAccessKey=nimda123
+    #media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
 
-    media.globalSettings.s3MediaStorageStrategy.url.signed=false
-    media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
-    media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
-    media.globalSettings.s3MediaStorageStrategy.url.validFor=120
-    media.globalSettings.s3MediaStorageStrategy.cleanOnInit=true
+    #media.globalSettings.s3MediaStorageStrategy.url.signed=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
+    #media.globalSettings.s3MediaStorageStrategy.url.validFor=120
+    #media.globalSettings.s3MediaStorageStrategy.cleanOnInit=true
 
-    cluster.nodes.autodiscovery=false
-    cluster.nodes.ping.interval=200
-    cluster.nodes.stale.timeout=300
-    clustermode=false
-    cluster.broadcast.methods=jgroups
-    cluster.broadcast.method.jgroups=de.hybris.platform.cluster.jgroups.JGroupsBroadcastMethod
-    cluster.broadcast.method.jgroups.channel.name=hybris-broadcast
-    cluster.broadcast.method.jgroups.configuration=jgroups-tcp.xml
+    #cluster.nodes.autodiscovery=false
+    #cluster.nodes.ping.interval=200
+    #cluster.nodes.stale.timeout=300
+    #clustermode=false
+    #cluster.broadcast.methods=jgroups
+    #cluster.broadcast.method.jgroups=de.hybris.platform.cluster.jgroups.JGroupsBroadcastMethod
+    #cluster.broadcast.method.jgroups.channel.name=hybris-broadcast
+    #cluster.broadcast.method.jgroups.configuration=jgroups-tcp.xml
 metadata:
   name: hybris-override-config
 ---
@@ -91,10 +163,16 @@ spec:
           - containerPort: 9002
           resources: {}
           volumeMounts:
+          - name: hybris-config
+            mountPath: /opt/hybris/config/hybris.properties
+            subPath: local.properties
           - name: hybris-override
             mountPath: /opt/hybris/config/override/10-local.properties
             subPath: 10-local.properties
       volumes:
+        - name: hybris-config
+          configMap:
+            name: hybris-config
         - name: hybris-override
           configMap:
             name: hybris-override-config
@@ -109,7 +187,7 @@ spec:
   type: ClusterIP
   ports:
   - name: hybris
-    port: 9002
+    port: 443
     targetPort: 9002
   selector:
     app: hybris
@@ -131,20 +209,20 @@ spec:
       - path: /
         backend:
           serviceName: hybris
-          servicePort: 9002
+          servicePort: 443
   - host: electronics.local
     http:
       paths:
       - path: /yacceleratorstorefront
         backend:
           serviceName: hybris
-          servicePort: 9002
+          servicePort: 443
   - host: hybris-backoffice.local
     http:
       paths:
       - path: /backoffice
         backend:
           serviceName: hybris
-          servicePort: 9002
+          servicePort: 443
   tls:
   - secretName: hybris-ssl
