@@ -7,7 +7,7 @@ metadata:
     external-dns.alpha.kubernetes.io/target: k8s-pactera-deg.com.
 spec:
   rules:
-  - host: foo.bar.com
+  - host: foo.k8s-pactera-deg.com
     http:
       paths:
       - backend:
