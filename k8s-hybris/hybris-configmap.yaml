@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 data:
   10-local.properties: |
-    db.url=jdbc:mysql://mysql:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
+    db.url=jdbc:mysql://hybris-mysql-pxc:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
     db.username=root
     db.password=nimda
 

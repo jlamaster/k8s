@@ -1,6 +1,9 @@
+kubectl -n kube-system create serviceaccount tiller
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+
 helm install --name hybris-mysql -f k8s-percona-helm-values.yaml stable/percona-xtradb-cluster
 
-helm install --name hybris-mysql -f k8s-percona-helm-values.yaml --set mysqlRootPassword=nimda,mysqlUser=root,mysqlPassword=nimda,mysqlDatabase=ycomm stable/percona-xtradb-cluster
+    helm install --name hybris-mysql -f k8s-percona-helm-values.yaml --set mysqlRootPassword=nimda,mysqlUser=root,mysqlPassword=nimda,mysqlDatabase=ycomm stable/percona-xtradb-cluster
 
 #client
 kubectl run -i --tty --rm percona-client --image=percona:5.7 --restart=Never -- mysql -h mysql-db-pxc.default.svc.cluster.local -uroot -pnimda
