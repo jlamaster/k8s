@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: traefik
   namespace: default
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: traefik.k8s-pactera-deg.com.
 spec:
   externalTrafficPolicy: Cluster
   ports:
