@@ -245,7 +245,7 @@ metadata:
   namespace: default
 spec:
   rules:
-  - host: traefik.pactera-deg.com
+  - host: dashboard.k8s-pactera-deg.com
     http:
       paths:
       - backend:
