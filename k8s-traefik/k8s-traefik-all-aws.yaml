@@ -236,6 +236,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
+    external-dns.alpha.kubernetes.io/target: traefik.k8s-pactera-deg.com
     kubernetes.io/ingress.class: traefik
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
@@ -244,7 +245,7 @@ metadata:
   namespace: default
 spec:
   rules:
-  - host: traefik-dashboard.k8s-pactera-deg.com
+  - host: traefik.pactera-deg.com
     http:
       paths:
       - backend:
