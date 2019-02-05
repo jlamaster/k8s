@@ -244,11 +244,11 @@ metadata:
   namespace: default
 spec:
   rules:
-  - host: traefik-dashboard
+  - host: traefik-dashboard.k8s-pactera-deg.com
     http:
       paths:
       - backend:
-          serviceName: traefik-dashboard.k8s-pactera-deg.com
+          serviceName: traefik-dashboard
           servicePort: 8080
   tls:
   - secretName: traefik-dashboard-ssl
