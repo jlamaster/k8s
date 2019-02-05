@@ -3,16 +3,14 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
-    traefik.ingress.kubernetes.io/redirect-entry-point: https
-    traefik.ingress.kubernetes.io/redirect-permanent: "true"
-  creationTimestamp: null
-  generation: 1
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
   name: kubernetes-dashboard
   selfLink: /apis/extensions/v1beta1/namespaces/kube-system/ingresses/kubernetes-dashboard
 spec:
   rules:
-  - host: traefik-dashboard.local
+  - host: traefik-dashboard.pactera-deg.com
     http:
       paths:
       - backend:
