@@ -133,6 +133,8 @@ metadata:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
   namespace: kube-system
+#  annotations:
+#    external-dns.alpha.kubernetes.io/hostname: k8s-dashboard.pactera-deg.com.
 spec:
   ports:
     - port: 443
