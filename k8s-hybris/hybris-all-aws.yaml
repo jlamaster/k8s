@@ -1,0 +1,229 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hybris-ssl
+type: kubernetes.io/tls
+data:
+  #cat cert | base64 -w0
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVrVENDQXZtZ0F3SUJBZ0lSQVBLa0tqU2cwWlJnMnE1MUR6ZzhMRzh3RFFZSktvWklodmNOQVFFTEJRQXcKY1RFZU1Cd0dBMVVFQ2hNVmJXdGpaWEowSUdSbGRtVnNiM0J0Wlc1MElFTkJNU013SVFZRFZRUUxEQnBRTURFeApNemM0T1Z4UU1ERXhNemM0T1VCUU1ERXhNemM0T1RFcU1DZ0dBMVVFQXd3aGJXdGpaWEowSUZBd01URXpOemc1ClhGQXdNVEV6TnpnNVFGQXdNVEV6TnpnNU1CNFhEVEU1TURJd05UQXhNak0xTTFvWERUSTVNREl3TlRBeE1qTTEKTTFvd1RqRW5NQ1VHQTFVRUNoTWViV3RqWlhKMElHUmxkbVZzYjNCdFpXNTBJR05sY25ScFptbGpZWFJsTVNNdwpJUVlEVlFRTERCcFFNREV4TXpjNE9WeFFNREV4TXpjNE9VQlFNREV4TXpjNE9UQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFLZUYxaFpTTnJCODlseGszMWxTK0RtbjVMNmhvUkVtM2MyQms4bysKdWpOZW4rdEpXWklQemswV0pDK2RpRmhpSG1KM3h6WFROcnBLaTB5Z2thcmF3LzE0UVhnWXpUcEFKWVZBYXFySApXbEVZSkpnc1NkbXQxT0dlYk1jV2NQakpUSDZSUlFRN0s5S2lSSWpPbjU4eTJ5VlZmRGU5a0RoY205eHF6c3h5CkFFMXErN0lHaVF6NXZKaWR0NlVBaTB1SlFZZXRmblhTWkpQQm1IV25iV2p0YUdPcUdEWm5WYU04c3huemk4TVgKczJPNGlCZXhGMm5aYkRMc1VNL2gxenVjRlBaWUttR2I0dE9uTURHSlB4aFAwb0doakhMMTlCQ2dCek44TEp6egppa2FKUHQ5STB3ZjZjMTVIaHR0TU42WVVqbk1WVHNZK25KaGNNTzJnZUlZKzdka0NBd0VBQWFPQnhqQ0J3ekFPCkJnTlZIUThCQWY4RUJBTUNCYUF3RXdZRFZSMGxCQXd3Q2dZSUt3WUJCUVVIQXdFd0RBWURWUjBUQVFIL0JBSXcKQURBZkJnTlZIU01FR0RBV2dCUkxGTEIvWEtPbWt0T0tpR1VWaGdQRU9GRFdkakJ0QmdOVkhSRUVaakJrZ2hGbApiR1ZqZEhKdmJtbGpjeTVzYjJOaGJJSVhhSGxpY21sekxXSmhZMnR2Wm1acFkyVXViRzlqWVd5Q0VtaDVZbkpwCmN5MWhaRzFwYmk1c2IyTmhiSUlRWVhCd1lYSmxiQzExYXk1c2IyTmhiSUlRWVhCd1lYSmxiQzFrWlM1c2IyTmgKYkRBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVlFQWZSRGMxSFVyY2gxdnFtb0pwR2dWaDVLbDBxUjB6VGh6b0tqdApkZWZhODlqRmRQS0NhZng2ZXdiYmtSdEgwbERudXo4cUtzckNvYUlHRXRBV3hHT3dra3EvZldKUUp4UU9wZ1ZFCnVQS1RDMFZ1eW5aeDMzRXdsa0VGV1VjS2RNVFh0eUlZQW9HQ1Q0SnJyaFpFSnA0Y1VmdCtOSGVVOWdZR25kbTQKc0VjN2tuYXpFRFVxUlJCbGM4M1FxU0o4ZzVCOHl3cmxXbUNsNWtDMnlyK0VaMnRpcnBoUVludTZPeUZlRWRCTQpvWTgrWHd2U2ZjRHFaVmhwV1h1bnltN2d4OElCQjIwcjB4dVc3eEYxNFRpZ2xWNlZSc042em9OelJYRkJQdVo2CnhTZUd4STRSdWZqWUZqZWRJaDgwVHl6R2oxcTJaTm5aQUdXcFhyeWZPVkZrWlFERHJmVm54bzUzQm9MREN5aFIKUldmSDlxbndBQkxBc0dIVU5GdVQzQ3R3UnVVUUhyeGFCYktlV1BlcngzVlNkb1RlMVdiNmdyVlFDTDRrd0cyRApLOGN2OFk5YXpuKzVLNmY1VFBPY1Z3WEFuRTNoZXczK3NZVWxlRkdrcXFIc2d6bVEzNDZhZ1IvY0xqdWtsTXEvClpGWlVqOWw4dkt6eDBHSVNSVkNkMzdwME1RNXkKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQ25oZFlXVWphd2ZQWmMKWk45WlV2ZzVwK1Mrb2FFUkp0M05nWlBLUHJvelhwL3JTVm1TRDg1TkZpUXZuWWhZWWg1aWQ4YzEwemE2U290TQpvSkdxMnNQOWVFRjRHTTA2UUNXRlFHcXF4MXBSR0NTWUxFblpyZFRobm16SEZuRDR5VXgra1VVRU95dlNva1NJCnpwK2ZNdHNsVlh3M3ZaQTRYSnZjYXM3TWNnQk5hdnV5Qm9rTStieVluYmVsQUl0TGlVR0hyWDUxMG1TVHdaaDEKcDIxbzdXaGpxaGcyWjFXalBMTVo4NHZERjdOanVJZ1hzUmRwMld3eTdGRFA0ZGM3bkJUMldDcGhtK0xUcHpBeAppVDhZVDlLQm9ZeHk5ZlFRb0FjemZDeWM4NHBHaVQ3ZlNOTUgrbk5lUjRiYlREZW1GSTV6RlU3R1BweVlYRER0Cm9IaUdQdTNaQWdNQkFBRUNnZ0VCQUlDU2RLUi9CdUJmbUVtRFZmUmRmSXZyc3VFb2RkRVBMbTY2ZzY1V2hGeEcKeEtBMWxKeElxMEo0dXQ4Y25mZVBudGhlSzdQQTNxRU44Mm1sVndkMWpiU3RKanBCZHNtOVQ4NjhpT0YzelhhdAorL0FiRmJjTzluTVBQMWR4ZnRWQzBnWFdBczFqaUpmSjJLWFRSNmxNdytzY2VCRGoyWnVZWUR0RWNtRnhJWkJJClRKTTBxdEwxSHRCVkE0bUtLdzZlMzNXVTVpSlZ4bVlwSkV2ZkdibkplQnJRY3FOVk5EUFpLeUZzRW1FbXpDNFUKdGgvQ2cxcDVramxTWnRQRkFNR01zSW9XcUNTZm5VODlJZzNXQzFjKzA0WktmUVE5NFBnai94aVZoZlRhNjdHWApOeFlPTU5FZ0R6bUNyOHMyd0pUbnU5YmhwV0lZU1JKUUYxVmtETkdNc1gwQ2dZRUEyVWJZNlVWTEsrc1RMZDAzCktwdGxrNEovdHphVmYvYU9vTGxFM0hQakwzVGZ1WDFENFhiUTdJRmlZOS83Y2NpdzZYb3ZGL25wK2daU1RReEMKZHRsc2pIdzVWWVJad2g1ZmNONklsWlNDUjJrUDBCU1R4YzNCb0c4TEh1emtzWkRJNytsRzBZTjRzekIzNjZ4MQo0eHBkR01UZEdhSE96cTExblJWdXkxWWQvZWNDZ1lFQXhXRDgySGw5djBrcnRjbDg4SWZIakUzOUFhZFhIRmhaCmpLUWxnUElzYTNOS0Z4L1RpMytzbUxpQXhMZEIvbU5wVzhseFdXa2U3RWlaNllMazlBaTVZT0JTcnN4S2V1YXEKeWU1WWhHK1haWW9iY3B0a2hWVllFNUlFSWxCVmh4RFBIdWRuaXh0MnhVNXJsYUxHVkdldVVLYWMvLzVLeVlCNwpidzMvdkpTMHZqOENnWUVBMFczcXNwNnFJSUVNRVk5REYzeUY0ak5OYTRuZmZHSnBoQjVRYzdYNGE4dlp3ZTh1Ck9PclA0c2VyME4wYWZzaVZUZGNLQWJCUWlVRUNuMldMd3djOERBWEpOZGJHdGNlVTh6UnNydEZnNmZnbzE4YWQKMFhITWl4bTl2R2RXNEpqUU5mL0MxVHhHWVdIOGxWdThuZFRSbTRoV0hkakxnSWZOOEVXeWI2aG9iRTBDZ1lBago2N1c0VTh2dHZ3eEVaaW5sd0dBeGlaUHM5QjVuV3pEWTVwcW9yK29qbC9TNDVxTGlOVmNjNkI4UExlYkZ2Q1BWCmY0Q3dhL0Fqd2thNGQ0amhYS0VZSDFzTTBzTVBRT0YrSkhGWmtORjF1aitxaU5zdlpNdkZyQUl5bUhvb1BZZmsKTU9yb0p4UmpiaFVvUTFwaXpBZXVSOVEweG51bjFra2dlZVM3MWpoYWt3S0JnUUN4bWRrT1lGb3N6R1RyUjZ3SgpnbzZ0YThqdTg1TXBtUXQ3eEdLSHh1TVRCckJQbVpob0hQL3UwdkxvZmlSQUh2emt0OVViVytGOVRieitiTEk0CnlSRW1OaEdpVmVXZlQwOUw1QS82Q0kxazk3RENuZFBtU2szdWFNNkFwZytEMllOYnBCYkk4WE9nUERtUkh6cGUKWnBwc3hXR1hqWkxZNlZSVDVQZHE5TDJGMUE9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  local.properties: |
+    #########################################################################################################
+    #########################################################################################################
+    ##################################### START CUSTOM PROPERTIES ###########################################
+    #########################################################################################################
+    #########################################################################################################
+
+    #### DATABASE ####
+    ## A type of MySQL database tables, for example InnoDB for transactional or MyISAM for non-transactional tables
+    #mysql.tabletype=InnoDB
+
+    #db.url=jdbc:mysql://mysql:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
+    #db.driver=com.mysql.jdbc.Driver
+    #db.username=root
+    #db.password=nimda
+    #db.tableprefix=
+    #mysql.optional.tabledefs=CHARSET=utf8 COLLATE=utf8_bin
+    #mysql.allow.fractional.seconds=true
+
+    ## Setting proper transaction isolation level is required for MySQL
+    #db.customsessionsql=SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+    ## Default solr in standalone mode
+    #solrserver.instances.default.autostart=false
+    #solrserver.instances.default.mode=standalone
+    #solrserver.instances.default.hostname=solr
+    #solrserver.instances.default.port=8983
+    #solrserver.instances.default.memory=512m
+    #solrserver.instances.default.authtype=basic
+    #solrserver.instances.default.user=solradmin
+    #solrserver.instances.default.password=admin123
+    #solrserver.instances.default.ssl.enabled=true
+    #solrserver.instances.default.ssl.keyStorePassword=123456
+    #solrserver.instances.default.ssl.trustStorePassword=123456
+
+    #Mino Settings
+    #default.storage.strategy=s3MediaStorageStrategy
+    #default.url.strategy=minioS3MediaURLStrategy
+    #media.default.storage.strategy=s3MediaStorageStrategy
+    #media.default.url.strategy=minioS3MediaURLStrategy
+
+    #media.globalSettings.s3MediaStorageStrategy.bucketId=media-storage
+    #media.globalSettings.s3MediaStorageStrategy.accessKeyId=admin123
+    #media.globalSettings.s3MediaStorageStrategy.secretAccessKey=nimda123
+    #media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
+
+    #media.globalSettings.s3MediaStorageStrategy.url.signed=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
+    #media.globalSettings.s3MediaStorageStrategy.url.validFor=120
+    #media.globalSettings.s3MediaStorageStrategy.cleanOnInit=true
+
+    #cluster.nodes.autodiscovery=true
+    #cluster.nodes.ping.interval=200
+    #cluster.nodes.stale.timeout=300
+    #clustermode=true
+    #cluster.broadcast.methods=jgroups
+    #cluster.broadcast.method.jgroups=de.hybris.platform.cluster.jgroups.JGroupsBroadcastMethod
+    #cluster.broadcast.method.jgroups.channel.name=hybris-broadcast
+    #cluster.broadcast.method.jgroups.configuration=jgroups-tcp.xml
+
+    #########################################################################################################
+    #########################################################################################################
+    #################################### END CUSTOM PROPERTIES ##############################################
+    #########################################################################################################
+    #########################################################################################################
+metadata:
+  name: hybris-config
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  10-local.properties: |
+    #mysql.tabletype=InnoDB
+
+    #db.url=jdbc:mysql://mysql:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
+    #db.driver=com.mysql.jdbc.Driver
+    #db.username=root
+    #db.password=nimda
+    #db.tableprefix=
+    #mysql.optional.tabledefs=CHARSET=utf8 COLLATE=utf8_bin
+    #mysql.allow.fractional.seconds=true
+
+    ## Setting proper transaction isolation level is required for MySQL
+    #db.customsessionsql=SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+    db.url=jdbc:hsqldb:file:${HYBRIS_DATA_DIR}/hsqldb/mydb;shutdown=true;hsqldb.tx=MVCC
+    db.driver=org.hsqldb.jdbcDriver
+    db.username=sa
+    db.password=
+    db.tableprefix=
+    hsqldb.usecachedtables=true
+
+    cluster.nodes.ping.interval=2
+    cluster.nodes.stale.timeout=1
+
+    #Mino Settings
+    #default.storage.strategy=s3MediaStorageStrategy
+    #default.url.strategy=minioS3MediaURLStrategy
+    #media.default.storage.strategy=s3MediaStorageStrategy
+    #media.default.url.strategy=minioS3MediaURLStrategy
+
+    #media.globalSettings.s3MediaStorageStrategy.bucketId=media-storage
+    #media.globalSettings.s3MediaStorageStrategy.accessKeyId=admin123
+    #media.globalSettings.s3MediaStorageStrategy.secretAccessKey=nimda123
+    #media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
+
+    #media.globalSettings.s3MediaStorageStrategy.url.signed=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
+    #media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
+    #media.globalSettings.s3MediaStorageStrategy.url.validFor=120
+    #media.globalSettings.s3MediaStorageStrategy.cleanOnInit=true
+
+    #cluster.nodes.autodiscovery=false
+    #cluster.nodes.ping.interval=200
+    #cluster.nodes.stale.timeout=300
+    #clustermode=false
+    #cluster.broadcast.methods=jgroups
+    #cluster.broadcast.method.jgroups=de.hybris.platform.cluster.jgroups.JGroupsBroadcastMethod
+    #cluster.broadcast.method.jgroups.channel.name=hybris-broadcast
+    #cluster.broadcast.method.jgroups.configuration=jgroups-tcp.xml
+metadata:
+  name: hybris-override-config
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: hybris
+  name: hybris
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hybris
+    spec:
+      containers:
+        - name: hybris
+          image: pacteradeg/hybris-ootb:b2c-minio-1808
+          env:
+          - name: PLATFORM_HOME
+            value: /opt/hybris/bin/platform
+          - name: HYBRIS_OPT_CONFIG_DIR
+            value: /opt/hybris/config/override
+          - name: HYBRIS_OPT_CONFIG
+            value: /opt/hybris/config/override
+          ports:
+          - containerPort: 9002
+          resources: {}
+          volumeMounts:
+          - name: hybris-config
+            mountPath: /opt/hybris/config/hybris.properties
+            subPath: local.properties
+          - name: hybris-override
+            mountPath: /opt/hybris/config/override/10-local.properties
+            subPath: 10-local.properties
+      volumes:
+        - name: hybris-config
+          configMap:
+            name: hybris-config
+        - name: hybris-override
+          configMap:
+            name: hybris-override-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hybris
+  name: hybris
+spec:
+  type: ClusterIP
+  ports:
+  - name: hybris
+    port: 443
+    targetPort: 9002
+  selector:
+    app: hybris
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+#    kubernetes.io/ingress.class: traefik
+    external-dns.alpha.kubernetes.io/target: a844cd23e29c911e9bf720ab8dd92266-323d3ace79f9b53e.elb.ap-northeast-1.amazonaws.com.
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  name: hybris
+spec:
+  rules:
+  - host: hybris-admin.pactera-deg.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hybris
+          servicePort: 443
+  - host: electronics.pactera-deg.com
+    http:
+      paths:
+      - path: /yacceleratorstorefront
+        backend:
+          serviceName: hybris
+          servicePort: 443
+  - host: hybris-backoffice.pactera-deg.com
+    http:
+      paths:
+      - path: /backoffice
+        backend:
+          serviceName: hybris
+          servicePort: 443
+  tls:
+  - secretName: hybris-ssl
