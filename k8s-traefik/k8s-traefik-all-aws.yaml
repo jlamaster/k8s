@@ -118,6 +118,7 @@ spec:
         - --web.metrics.prometheus
         - --logLevel=DEBUG
         image: traefik
+        name: traefik-ingress
 #        image: traefik:1.6.6
         imagePullPolicy: IfNotPresent
         livenessProbe:
