@@ -196,7 +196,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
     # external-dns
     external-dns.alpha.kubernetes.io/hostname: traefik.k8s-pactera-deg.com.
-    external-dns.alpha.kubernetes.io/ttl: 60
+    external-dns.alpha.kubernetes.io/ttl: "60"
 spec:
   ports:
   - name: http
