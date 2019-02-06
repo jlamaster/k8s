@@ -157,12 +157,6 @@ spec:
         - mountPath: /config
           name: config
       restartPolicy: Always
-      securityContext:
-        capabilities:
-          drop:
-          - ALL
-          add:
-          - NET_BIND_SERVICE
       serviceAccount: default
       serviceAccountName: default
       terminationGracePeriodSeconds: 60
