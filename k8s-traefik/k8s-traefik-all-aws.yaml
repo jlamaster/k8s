@@ -238,8 +238,6 @@ metadata:
   name: traefik-dashboard
   namespace: kube-system
 spec:
-  selector:
-    app: traefik-ingress
   rules:
   - host: traefik-dashboard.k8s-pactera-deg.com
     http:
