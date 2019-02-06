@@ -1,0 +1,192 @@
+# Deployments
+# --------------------------------------------------------------------
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: stilton
+  namespace: dev
+  labels:
+    app: cheese
+    cheese: stilton
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cheese
+      task: stilton
+  template:
+    metadata:
+      labels:
+        app: cheese
+        task: stilton
+        version: v0.0.1
+    spec:
+      containers:
+      - name: cheese
+        image: errm/cheese:stilton
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 100m
+            memory: 50Mi
+        ports:
+        - containerPort: 80
+
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: cheddar
+  namespace: dev
+  labels:
+    app: cheese
+    cheese: cheddar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cheese
+      task: cheddar
+  template:
+    metadata:
+      labels:
+        app: cheese
+        task: cheddar
+        version: v0.0.1
+    spec:
+      containers:
+      - name: cheese
+        image: errm/cheese:cheddar
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 100m
+            memory: 50Mi
+        ports:
+        - containerPort: 80
+
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: wensleydale
+  namespace: dev
+  labels:
+    app: cheese
+    cheese: wensleydale
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cheese
+      task: wensleydale
+  template:
+    metadata:
+      labels:
+        app: cheese
+        task: wensleydale
+        version: v0.0.1
+    spec:
+      containers:
+      - name: cheese
+        image: errm/cheese:wensleydale
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 100m
+            memory: 50Mi
+        ports:
+        - containerPort: 80
+
+# Services
+# --------------------------------------------------------------------
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stilton
+  namespace: dev
+spec:
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    app: cheese
+    task: stilton
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cheddar
+  namespace: dev
+spec:
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    app: cheese
+    task: cheddar
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wensleydale
+  namespace: dev
+spec:
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    app: cheese
+    task: wensleydale
+
+
+# Services
+# --------------------------------------------------------------------
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cheese
+  namespace: dev
+spec:
+  rules:
+  - host: stilton.k8s-pactera-deg.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: stilton
+          servicePort: http
+  - host: cheddar.k8s-pactera-deg.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: cheddar
+          servicePort: http
+  - host: wensleydale.k8s-pactera-deg.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wensleydale
+          servicePort: http
