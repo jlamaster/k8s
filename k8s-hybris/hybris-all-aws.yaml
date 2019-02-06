@@ -98,12 +98,12 @@ data:
     ## Setting proper transaction isolation level is required for MySQL
     #db.customsessionsql=SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
-    db.url=jdbc:hsqldb:file:${HYBRIS_DATA_DIR}/hsqldb/mydb;shutdown=true;hsqldb.tx=MVCC
-    db.driver=org.hsqldb.jdbcDriver
-    db.username=sa
-    db.password=
-    db.tableprefix=
-    hsqldb.usecachedtables=true
+    #db.url=jdbc:hsqldb:file:${HYBRIS_DATA_DIR}/hsqldb/mydb;shutdown=true;hsqldb.tx=MVCC
+    #db.driver=org.hsqldb.jdbcDriver
+    #db.username=sa
+    #db.password=
+    #db.tableprefix=
+    #hsqldb.usecachedtables=true
 
     cluster.nodes.ping.interval=2
     cluster.nodes.stale.timeout=1
@@ -164,7 +164,7 @@ spec:
           resources: {}
           volumeMounts:
           - name: hybris-config
-            mountPath: /opt/hybris/config/hybris.properties
+            mountPath: /opt/hybris/config/local.properties
             subPath: local.properties
           - name: hybris-override
             mountPath: /opt/hybris/config/override/10-local.properties
