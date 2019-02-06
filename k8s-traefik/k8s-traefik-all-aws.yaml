@@ -190,7 +190,8 @@ metadata:
   namespace: kube-system
   annotations:
     # Enable PROXY protocol
-    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+    #service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
     # Increase the ELB idle timeout to avoid issues with WebSockets or Server-Sent Events.
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
     # external-dns
