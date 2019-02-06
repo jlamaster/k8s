@@ -229,7 +229,9 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-#  annotations:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: traefik.k8s-pactera-deg.com
+    external-dns.alpha.kubernetes.io/target: a844cd23e29c911e9bf720ab8dd92266-323d3ace79f9b53e.elb.ap-northeast-1.amazonaws.com.
 #    external-dns.alpha.kubernetes.io/target: traefik.k8s-pactera-deg.com.
  #   kubernetes.io/ingress.class: traefik
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
