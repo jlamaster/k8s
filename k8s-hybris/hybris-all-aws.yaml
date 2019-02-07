@@ -162,6 +162,8 @@ spec:
           ports:
           - containerPort: 9002
           resources: {}
+          securityContext:
+            runAsUser: 1000
           volumeMounts:
           - name: hybris-config
             mountPath: /opt/hybris/config/local.properties

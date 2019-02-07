@@ -19,6 +19,8 @@ spec:
       - args:
         - standalone
         image: pacteradeg/hybris-solr
+        securityContext:
+          runAsUser: 1000
         env:
         - name: SOLR_DATA_HOME
           value: /opt/solr/server/solr/data
