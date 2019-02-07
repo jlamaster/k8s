@@ -162,8 +162,6 @@ spec:
           ports:
           - containerPort: 9002
           resources: {}
-          securityContext:
-            runAsUser: 1000
           volumeMounts:
           - name: hybris-config
             mountPath: /opt/hybris/config/local.properties
@@ -171,6 +169,13 @@ spec:
           - name: hybris-override
             mountPath: /opt/hybris/config/override/10-local.properties
             subPath: 10-local.properties
+          securityContext:
+            allowPrivilegeEscalation: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
       volumes:
         - name: hybris-config
           configMap:
