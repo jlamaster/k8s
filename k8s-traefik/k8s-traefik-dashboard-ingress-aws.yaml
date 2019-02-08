@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: a844cd23e29c911e9bf720ab8dd92266-323d3ace79f9b53e.elb.ap-northeast-1.amazonaws.com.
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/issuer: "letsencrypt-prod"
+    certmanager.k8s.io/acme-challenge-type: http01
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    traefik.ingress.kubernetes.io/whitelist-source-range: "122.222.165.14/32"
+#    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
+  name: traefik-dashboard
+  namespace: kube-system
+spec:
+  rules:
+  - host: traefik-dashboard.pactera-deg.com
+    http:
+      paths:
+      - backend:
+          serviceName: traefik-dashboard
+          servicePort: 8080
+  tls:
+  - hosts:
+    - traefik-dashboard.pactera-deg.com
+    secretName: traefik-ssl
