@@ -200,6 +200,8 @@ metadata:
   annotations:
 #    kubernetes.io/ingress.class: traefik
     external-dns.alpha.kubernetes.io/target: a844cd23e29c911e9bf720ab8dd92266-323d3ace79f9b53e.elb.ap-northeast-1.amazonaws.com.
+    certmanager.k8s.io/issuer: "letsencrypt-staging"
+    certmanager.k8s.io/acme-challenge-type: http01
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
 #    traefik.ingress.kubernetes.io/redirect-permanent: "true"
@@ -228,4 +230,10 @@ spec:
           serviceName: hybris
           servicePort: 443
   tls:
-  - secretName: hybris-ssl
+  - hosts:
+    - electronics.pactera-deg.com
+    secretName: hybris-frontend-ssl
+  - hosts:
+    - hybris-backoffice.pactera-deg.com
+    - hybris-admin.pactera-deg.com
+    secretName: hybris-backoffice-ssl
