@@ -8,6 +8,7 @@ metadata:
 #    traefik.ingress.kubernetes.io/redirect-entry-point: https
 #    traefik.ingress.kubernetes.io/redirect-permanent: "true"
   name: dokuwiki
+  namespace: dokuwiki-glctc
 spec:
   rules:
   - host: dokuwiki.pactera-deg.com
@@ -15,5 +16,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: dokuwiki
+          serviceName: autoback-7-dokuwiki
           servicePort: http
