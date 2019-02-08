@@ -4,6 +4,7 @@ metadata:
   annotations:
 #    kubernetes.io/ingress.class: traefik
     external-dns.alpha.kubernetes.io/target: a844cd23e29c911e9bf720ab8dd92266-323d3ace79f9b53e.elb.ap-northeast-1.amazonaws.com.
+    kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/issuer: "letsencrypt-staging"
     certmanager.k8s.io/acme-challenge-type: http01
 #    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
