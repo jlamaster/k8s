@@ -1,8 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+  namespace: kube-system
+spec:
+  ports:
+  - name: dashboard
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: traefik-ingress
+  sessionAffinity: None
+  type: ClusterIP
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/target: aa86034f7290211e9bf720ab8dd92266-b801c0d3619a7ac6.elb.ap-northeast-1.amazonaws.com.
+    external-dns.alpha.kubernetes.io/target: adb3a6feb2c3f11e98d3b06a96cdcafe-d9a3361f5248f2f8.elb.ap-northeast-1.amazonaws.com.
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/issuer: "letsencrypt-prod"
     certmanager.k8s.io/acme-challenge-type: http01
