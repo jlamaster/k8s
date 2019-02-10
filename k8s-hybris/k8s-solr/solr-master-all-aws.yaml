@@ -89,7 +89,7 @@ data:
           replication is in use, this should match the replication
           configuration.
         -->
-      <!-- <dataDir>${solr.data.home}/${solr.core.name}/data</dataDir> -->
+      <dataDir>${solr.data.home}/${solr.core.name}/data</dataDir>
       
       <!-- RestManager storage should be index specific -->
       <restManager>
