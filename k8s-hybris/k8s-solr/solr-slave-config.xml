@@ -1,8 +1,4 @@
-apiVersion: v1
-kind: ConfigMap
-data:
-  solrconfig.xml: |
-    <?xml version="1.0" encoding="UTF-8" ?>
+   <?xml version="1.0" encoding="UTF-8" ?>
 
     <!-- 
         For more details about configurations options that may appear in
@@ -1248,16 +1244,16 @@ data:
           the "master" or a "slave".  If this instance is a "slave" you will 
           also need to fill in the masterUrl to point to a real machine.
         -->
-  
-          <!--
-            <lst name="master">
+        <!--
+          <lst name="master">
             <str name="replicateAfter">commit</str>
+            <str name="replicateAfter">startup</str>
             <str name="confFiles">schema.xml,stopwords.txt</str>
           </lst>
-          -->
+        -->
           <lst name="slave">
             <str name="enable">true</str>
-            <str name="masterUrl">http://solr-master:8983/solr/data/${solr.core.name}/replication</str>
+            <str name="masterUrl">http://solr-master.default.svc.local:8983/solr/${solr.core.name}/replication</str>
             <str name="pollInterval">00:00:60</str>
           </lst>
       </requestHandler>
@@ -1683,125 +1679,3 @@ data:
       </admin>
 
     </config>
-metadata:
-  name: solr-slave-config
----
-apiVersion: apps/v1beta1
-kind: StatefulSet
-metadata:
-  labels:
-    app: solr-slave
-  name: solr-slave
-spec:
-  serviceName: solr-slave-service
-  replicas: 1
-  selector:
-    matchLabels:
-      app: solr-slave # has to match .spec.template.metadata.labels
-  template:
-    metadata:
-      labels:
-        app: solr-slave
-    spec:
-      securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
-        runAsNonRoot: true
-      containers:
-      - args:
-        - standalone
-        image: pacteradeg/hybris-solr
-        env:
-        - name: SOLR_DATA_HOME
-          value: /opt/solr/server/solr/data
-        - name: SOLR_ENVIROMENT
-          value: dev
-        name: solr-slave
-        ports:
-        - containerPort: 8983
-        resources: {}
-#        readinessProbe:
-#          tcpSocket:
-#            port: 8080
-#          initialDelaySeconds: 5
-#          periodSeconds: 10
-#        livenessProbe:
-#          tcpSocket:
-#            port: 8080
-#          initialDelaySeconds: 15
-#          periodSeconds: 20
-#        livenessProbe:
-#          httpGet:
-#            path: /minio/health/live
-#            port: 9000
-#          initialDelaySeconds: 120
-#          periodSeconds: 20
-#        readinessProbe:
-#          httpGet:
-#            path: /healthz
-#            port: 80
-#            httpHeaders:
-#              - name: Host
-#                value: KubernetesLivenessProbe
-#          initialDelaySeconds: 20
-        imagePullPolicy: Always
-        volumeMounts:
-        - mountPath: /opt/solr/server/solr/data
-          name: hybris-solr-slave-data
-        - name: solr-config
-          mountPath: /opt/solr/server/solr/configsets/default/conf/solrconfig.xml
-          subPath: solrconfig.xml
-      restartPolicy: Always
-      volumes:
-        - name: solr-config
-          configMap:
-            name: solr-slave-config
-  volumeClaimTemplates:
-  - metadata:
-      name: hybris-solr-slave-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 20Gi
-      storageClassName: general-2
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: solr-slave
-  name: solr-slave
-spec:
-  type: ClusterIP
-  ports:
-  - name: solr-slave-service
-    port: 8983
-    targetPort: 8983
-    protocol: TCP
-  selector:
-    app: solr-slave
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-#    kubernetes.io/ingress.class: traefik
-    external-dns.alpha.kubernetes.io/target: adb3a6feb2c3f11e98d3b06a96cdcafe-d9a3361f5248f2f8.elb.ap-northeast-1.amazonaws.com.
-#    kubernetes.io/tls-acme: "true"
-#    certmanager.k8s.io/issuer: "letsencrypt-prod"
-#    certmanager.k8s.io/acme-challenge-type: http01
-#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
-#    traefik.ingress.kubernetes.io/redirect-entry-point: https
-  name: solr-slave
-spec:
-  rules:
-  - host: solr-slave.pactera-deg.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: solr-slave
-          servicePort: 8983
-
-

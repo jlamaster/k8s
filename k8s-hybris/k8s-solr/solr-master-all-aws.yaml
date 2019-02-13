@@ -1249,16 +1249,17 @@ data:
           also need to fill in the masterUrl to point to a real machine.
         -->
           <lst name="master">
+            <str name="enable">true</str>
             <str name="replicateAfter">commit</str>
             <str name="replicateAfter">startup</str>
             <str name="confFiles">schema.xml,stopwords.txt</str>
           </lst>
-        <!--
+          <!--
           <lst name="slave">
-            <str name="masterUrl">http://your-master-hostname:port/solr/${solr.core.name}/replication</str>
+            <str name="masterUrl">http://solr-master:8983/solr/${solr.core.name}/replication</str>
             <str name="pollInterval">00:00:60</str>
           </lst>
-        -->
+          -->
       </requestHandler>
 
       <!-- Term Vector Component
