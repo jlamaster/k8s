@@ -1764,7 +1764,7 @@ spec:
       resources:
         requests:
           storage: 20Gi
-      storageClassName: general-2
+      storageClassName: general
 ---
 apiVersion: v1
 kind: Service
@@ -1787,7 +1787,8 @@ kind: Ingress
 metadata:
   annotations:
 #    kubernetes.io/ingress.class: traefik
-    external-dns.alpha.kubernetes.io/target: adb3a6feb2c3f11e98d3b06a96cdcafe-d9a3361f5248f2f8.elb.ap-northeast-1.amazonaws.com.
+    external-dns.alpha.kubernetes.io/target: ac967761856ac11e98f6106d60326c3c-81eae82283ab6f43.elb.ap-northeast-1.amazonaws.com
+    kubernetes.io/tls-acme: "true"
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/issuer: "letsencrypt-prod"
     certmanager.k8s.io/acme-challenge-type: http01
