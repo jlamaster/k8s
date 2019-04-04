@@ -87,9 +87,9 @@ data:
   10-local.properties: |
     #mysql.tabletype=InnoDB
 
-    db.url=jdbc:mysql://mysql.mysql.svc.cluster.local:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
+    db.url=jdbc:mysql://mysql-mysql.mysql-85mw9.svc.cluster.local:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
     db.driver=com.mysql.jdbc.Driver
-    db.username=root
+    db.username=admin
     db.password=nimda
     #db.tableprefix=
     mysql.optional.tabledefs=CHARSET=utf8 COLLATE=utf8_bin
@@ -120,7 +120,7 @@ data:
     #media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.11.0.4:9000
     #media.globalSettings.s3MediaStorageStrategy.endpoint=http://pactera-minio-s3.minio-mgnzn.svc.cluster.local:9000
     #media.globalSettings.s3MediaStorageStrategy.endpoint=https://minio.pactera-deg.com
-    media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.42.2.7:9000
+    media.globalSettings.s3MediaStorageStrategy.endpoint=http://10.42.1.18:9000
     media.globalSettings.s3MediaStorageStrategy.url.signed=false
     media.globalSettings.s3MediaStorageStrategy.url.unsigned.https=false
     media.globalSettings.s3MediaStorageStrategy.url.unsigned.virtualHost=true
