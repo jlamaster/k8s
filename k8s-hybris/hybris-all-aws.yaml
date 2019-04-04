@@ -85,6 +85,11 @@ apiVersion: v1
 kind: ConfigMap
 data:
   10-local.properties: |
+    website.electronics.http=http://electronics.pactera-deg.com/yacceleratorstorefront
+    website.electronics.https=https://electronics.pactera-deg.com/yacceleratorstorefront
+    website.apparel-uk.http=http://apparel-uk.pactera-deg.com/yacceleratorstorefront
+    website.apparel-uk.https=https://apparel-uk.pactera-deg.com/yacceleratorstorefront
+
     #mysql.tabletype=InnoDB
 
     db.url=jdbc:mysql://mysql-mysql.mysql-85mw9.svc.cluster.local:3306/ycomm?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false
