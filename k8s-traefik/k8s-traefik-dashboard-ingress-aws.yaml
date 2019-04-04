@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/target: aa86034f7290211e9bf720ab8dd92266-b801c0d3619a7ac6.elb.ap-northeast-1.amazonaws.com.
+    external-dns.alpha.kubernetes.io/target: rancher-master-alb-1386625492.ap-northeast-1.elb.amazonaws.com
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/issuer: "letsencrypt-prod"
     certmanager.k8s.io/acme-challenge-type: http01
