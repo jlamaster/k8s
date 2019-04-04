@@ -12,7 +12,7 @@ metadata:
 #    traefik.ingress.kubernetes.io/whitelist-source-range: "122.222.165.14/32"
 #    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
   name: minio
-  namespace: minio-mgnzn
+  namespace: minio
 spec:
   rules:
   - host: minio.pactera-deg.com
