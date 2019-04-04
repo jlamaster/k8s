@@ -59,4 +59,4 @@ spec:
         - --registry=txt
         - --txt-owner-id=k8s
         - --log-level=debug
-  #      - --aws-assume-role=arn:aws:iam::394918541229:user/rancher
+        - --aws-assume-role=arn:aws:iam::394918541229:user/CP77712905
