@@ -86,7 +86,7 @@ metadata:
 #apiVersion: v1
 #kind: Secret
 #metadata:
-#  name: traefik-dashboard-ssl
+#  name: traefik-ssl
 #  namespace: kube-system
 #type: kubernetes.io/tls
 #data:
@@ -194,7 +194,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
     # Increase the ELB idle timeout to avoid issues with WebSockets or Server-Sent Events.
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
-    external-dns.alpha.kubernetes.io/target: adb3a6feb2c3f11e98d3b06a96cdcafe-d9a3361f5248f2f8.elb.ap-northeast-1.amazonaws.com.
+    external-dns.alpha.kubernetes.io/target: rancher-master-alb-1386625492.ap-northeast-1.elb.amazonaws.com
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/issuer: "letsencrypt-prod"
     certmanager.k8s.io/acme-challenge-type: http01
