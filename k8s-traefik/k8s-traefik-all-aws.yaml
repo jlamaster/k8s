@@ -86,7 +86,7 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: traefik-dashboard-ssl
+  name: traefik-ssl
   namespace: kube-system
 type: kubernetes.io/tls
 data:
